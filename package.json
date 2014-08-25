@@ -1,0 +1,10 @@
+{
+    "name": "Master-Thesis",
+    "description": "Master Thesis: A Haskell Web-Application for data-mining competition-results from Star-Exec",
+    "dependencies": {
+        "gulp": "*",
+        "gulp-shell": "*",
+        "lodash": "*"
+    },
+    "repository": "git@github.com:stefanvonderkrone/thesis-markdown-pandoc.git"
+}
