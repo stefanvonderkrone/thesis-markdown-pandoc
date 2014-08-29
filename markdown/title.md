@@ -3,44 +3,44 @@
     
         \vspace*{1cm}
         
-       Dissertation No.
+       Master Thesis
        
         \vspace*{1cm}
         
-       \large{ \textbf{ \uppercase{Your Title\\Subtitle in next line if you want}}}
+       \large{ \textbf{ \uppercase{A Haskell Web-Application for data-mining competition-results from Star-Exec}}}
         
         \vspace{0.5cm}
         
         \vspace{1.5cm}
  
         A thesis submitted to attain the degree of\\
-        \large{\textsc{Doctor of Sciences of Your University}}\\ 
-        (Dr. sc. Your University)
+        \large{\textsc{Master of Science of HTWK Leipzig, University of applied Sciences}}\\ 
+        (M.Sc. HTWK Leipzig)
         
         \vspace{0.8cm}        
          
         presented by\\        
-        \textbf{Author Name}
+        \textbf{Stefan von der Krone}
        
        \vspace{0.8cm}    
-        \textit{MSc in some Field, some University}       
+        \textit{B.Eng. in Media Technology, University of applied Sciences Mittweida}       
        
        \vspace{0.8cm}          
-        born on your date of birth 
+        born on 19th of April, 1984 
              
         \vspace{0.5cm}     
-        citizen of some Country
+        citizen of Germany
         
          \vspace{2cm}
          accepted on the recommendation of
-        Names of Your Professors              
+        Prof. Dr. Johannis Waldmann
        
 
         
         
         \vfill
   
-        2014 or other year
+        2014
         
  
  

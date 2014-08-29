@@ -9,7 +9,7 @@ module.exports = {
             "papersize:a4paper",
             "classoption:openright"
         ],
-        bibliography: "zotero.bib",
+        bibliography: "Master-Thesis.bib",
         mdFiles: [
             "markdown/title.md",
             "markdown/summary.md",
