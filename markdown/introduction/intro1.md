@@ -2,3 +2,21 @@
 
 #Introduction 
 
+## Motivation
+
+This master thesis is a guide to the Star-Exec-Presenter, a web-based visualization and data-mining software developed in preparation of this thesis. The Star-Exec-Presenter is intended to be an efficient to use software for members of the termination community of the StarExec service, as well as other communities or users of StarExec. The web-application features essential functionalities such as starting so-called competitions, loading results and other data from StarExec or visualizing and filtering such data.
+
+Termination is a branch of theoretical computer science, where programs such as algorithms are examined, whether they terminate, that is whether they complete. In terms of StarExec, so-called solvers are running over a bunch of problems returning an answer for each problem: Yes, No or Maybe.
+
+The Termination Competition is an annual event of the termination community of StarExec, where solvers from different contributors compete in several categories. In 2014 the competition was organized by my professor, Johannes Waldman, and me. Our goal was to do both, starting the competition run as well as to present it via an automatically updated web-interface.
+
+Our additional goal was to be able to compare the results from the 2014 competition with those from previous ones. So we added an option to import the data from the 2007 competition hosted by the Laboratory of Computer Science at Université Paris-Sud and the following competitions hosted by the University of Innsbruck.
+
+"StarExec is a cross community logic solving service developed at the University of Iowa (...)." [@starexec_about_2013] It is a technical infrastructure providing the service to run logic solvers on a powerful cluster of CPUs. It also provides an extensive web-based user interface to upload and run solvers and problems, the so-called benchmarks. A REST-based[^REST] API is utalized by the Star-Exec-Presenter.
+
+[^REST]: Representational state transfer, a paradigm to implement a server-client communication
+
+The Star-Exec-Presenter is the software developed as the practice work for this master thesis. It is a web application developed with the programming language Haskel[^Haskell] utalizing the Yesod Web Framework[^YesodWeb].
+
+[^Haskell]: a functional, non-strict, declarative programming language (http://www.haskell.org)
+[^YesodWeb]: a REST-based web application framework

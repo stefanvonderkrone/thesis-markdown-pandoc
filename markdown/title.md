@@ -14,7 +14,7 @@
         \vspace{1.5cm}
  
         A thesis submitted to attain the degree of\\
-        \large{\textsc{Master of Science of HTWK Leipzig, University of applied Sciences}}\\ 
+        \large{\textsc{Master of Science, Leipzig University of Applied Sciences}}\\ 
         (M.Sc. HTWK Leipzig)
         
         \vspace{0.8cm}        
