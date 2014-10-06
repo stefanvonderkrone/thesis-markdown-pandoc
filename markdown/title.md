@@ -14,7 +14,7 @@
         \vspace{1.5cm}
  
         A thesis submitted to attain the degree of\\
-        \large{\textsc{Master of Science, Leipzig University of Applied Sciences}}\\ 
+        \large{\textsc{Master of Science at the Leipzig University of Applied Sciences}}\\ 
         (M.Sc. HTWK Leipzig)
         
         \vspace{0.8cm}        
@@ -33,7 +33,7 @@
         
          \vspace{2cm}
          accepted on the recommendation of
-        Prof. Dr. Johannis Waldmann
+        Prof. Dr. Johannes Waldmann
        
 
         

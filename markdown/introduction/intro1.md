@@ -2,8 +2,6 @@
 
 #Introduction 
 
-## Motivation
-
 This master thesis is a guide to the Star-Exec-Presenter, a web-based visualization and data-mining software developed in preparation of this thesis. The Star-Exec-Presenter is intended to be an efficient to use software for members of the termination community of the StarExec service, as well as other communities or users of StarExec. The web-application features essential functionalities such as starting so-called competitions, loading results and other data from StarExec or visualizing and filtering such data.
 
 Termination is a branch of theoretical computer science, where programs such as algorithms are examined, whether they terminate, that is whether they complete. In terms of StarExec, so-called solvers are running over a bunch of problems returning an answer for each problem: Yes, No or Maybe.
@@ -16,7 +14,13 @@ Our additional goal was to be able to compare the results from the 2014 competit
 
 [^REST]: Representational state transfer, a paradigm to implement a server-client communication
 
-The Star-Exec-Presenter is the software developed as the practice work for this master thesis. It is a web application developed with the programming language Haskel[^Haskell] utalizing the Yesod Web Framework[^YesodWeb].
+The Star-Exec-Presenter is the software developed as the practice work for this master thesis. It is a web application programmed in Haskel[^Haskell] with the utalization of the Yesod Web Framework[^YesodWeb].
 
-[^Haskell]: a functional, non-strict, declarative programming language (http://www.haskell.org)
-[^YesodWeb]: a REST-based web application framework
+[^Haskell]: a functional, non-strict, declarative programming language (http://www.haskell.org/)
+[^YesodWeb]: a REST-based web application framework (http://www.yesodweb.com/)
+
+## Motivation
+
+The motivation of this master thesis is to provide a tool for StarExec users for further research as well as some kind of standardization of hosting and running future termination competition and competitions of other StarExec communities. The goal for Star-Exec-Presenter is to be a tool, that is easy to use as well as easy to install and run. It is open source, so it can be forked und changed to better meet future needs.
+
+With Star-Exec-Presenter we wanted to extend the ability of the StarExec service with filtering of the results and comparing them with older ones from previous competitions. Contributers of solvers should be able to track their progress of development of their respective solver through time.
