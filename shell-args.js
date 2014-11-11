@@ -20,7 +20,10 @@ module.exports = {
             "markdown/chapters/chapter1_Termination_Competition.md",
             "markdown/chapters/chapter2_StarExec.md",
             "markdown/chapters/chapter3_StarExecPresenter.md",
-            "markdown/chapters/chapter4_Evaluation.md",
+            "markdown/chapters/chapter4_Requirements.md",
+            "markdown/chapters/chapter5_Use_Cases.md",
+            "markdown/chapters/chapter6_Implementation.md",
+            "markdown/chapters/chapter7_Evaluation.md",
             "markdown/appendix.md",
             "markdown/references.md"
         ],

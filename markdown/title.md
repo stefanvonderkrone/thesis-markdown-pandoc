@@ -7,7 +7,7 @@
        
         \vspace*{1cm}
         
-       \large{ \textbf{ \uppercase{A Haskell Web-Application for data-mining competition-results from Star-Exec}}}
+       \large{ \textbf{A Haskell Web-Application for data-mining competition-results from StarExec}}
         
         \vspace{0.5cm}
         
