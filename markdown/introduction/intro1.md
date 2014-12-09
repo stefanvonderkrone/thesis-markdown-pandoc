@@ -8,7 +8,9 @@ Termination is a branch of theoretical computer science where programs such as a
 
 The Termination Competition is an annual event of the termination community of StarExec, where solvers from different contributors compete in several categories. In 2014 the competition was organized by my adviser, Prof. Johannes Waldman, and me. Our goal was to do both, starting the competition run as well as to present it via an automatically updated web-interface.
 
-Our additional goal was to be able to compare the results from the 2014 competition with those from previous ones. So we added an option to import the data from the 2007 competition hosted by the Laboratory of Computer Science at Université Paris-Sud and the following competitions hosted by the University of Innsbruck.
+The 2014 competition caused a total amount of 13 Gigabyte of data and needed about 90 days of CPU time on all of the 192 Quad-Core CPUs of the StarExec cluster.
+
+Our additional goal was to be able to compare these results with those from previous ones. So we added an option to import the data from the 2007 competition hosted by the Laboratory of Computer Science at Université Paris-Sud and the following competitions hosted by the University of Innsbruck.
 
 "StarExec is a cross community logic solving service developed at the University of Iowa (...)." [@starexec_about_2013] It is a technical infrastructure providing the service to run logic solvers on a powerful cluster of CPUs. It also provides an extensive web-based user interface to upload and run solvers and problems, referred to as benchmarks. A REST-based[^REST] API is utalized by the Star-Exec-Presenter.
 
@@ -18,8 +20,6 @@ The Star-Exec-Presenter is the software developed as the concrete work for this 
 
 [^Haskell]: a functional, non-strict, declarative programming language (http://www.haskell.org/)
 [^YesodWeb]: a REST-based web application framework (http://www.yesodweb.com/)
-
-## Motivation
 
 The motivation of this thesis is to provide a tool for StarExec users for further research as well as some kind of standardization of hosting and running future termination competition and competitions of other StarExec communities. The goal for Star-Exec-Presenter is to be a tool, that is easy to use as well as easy to install and run. It is open source, so it can be forked und changed to better meet future needs.
 
