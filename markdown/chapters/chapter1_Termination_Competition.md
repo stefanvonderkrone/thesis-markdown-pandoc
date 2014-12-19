@@ -4,6 +4,10 @@ In this chapter I will discuss the terms of Termination and Termination of Term 
 
 ## Termination of Term Rewriting
 
+[@zantema_termination_2000]
+
 ## Termination Community
 
 ## Termination Competition
+
+[@marche_termination_2007]

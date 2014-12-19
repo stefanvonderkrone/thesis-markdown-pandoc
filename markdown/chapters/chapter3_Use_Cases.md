@@ -8,7 +8,11 @@ The core of StarExec is not only to run the solver on specific benchmarks but al
 
 ## Compare Results
 
-Simply displaying the results and outputs of each solver-run is not enough. It is more important to compare that data between several solver.
+Simply displaying the results and outputs of each solver-run is not enough. It is more important to compare the results between several solver. Are there differences between their results on specific benchmarks? Also, a list of jobs should be displayable at once. A historical comparison is the most important aspect of this use case, as the developers of a solver would want to track the evolution of their tool.
+
+## Querriyng
+
+
 
 ## Interpret Outputs as possible XML-Proofs
 
@@ -23,3 +27,5 @@ Hierarchical information is meant as how each solver and benchmark is organised 
 Each meta category is devided into smaller, more specific categories, each being a representation of an actual job on StarExec. These categories may be best described by the meta categories "Termination of Programming Languages", as there is a category about the programming language C. Other categories could bring up Java, Logic Programming or Functional Programming.
 
 ## Displaying a Competition and its Results
+
+The Star-Exec-Presenter is a tool that ran during the 2014 Termination Competition. It should display the current status of the competition run with a compact web interface that automatically updates itself.

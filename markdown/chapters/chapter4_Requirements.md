@@ -4,6 +4,4 @@ This chapter discusses the requirements that were agreed to. Which data is impor
 
 ## Solver and Post processor output
 
-## Caching
-
 ## Compact web interface

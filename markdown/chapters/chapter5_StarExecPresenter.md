@@ -4,4 +4,10 @@ The Star-Exec-Presenter is actually the concrete work of this thesis. As a REST-
 
 ## Application Structure
 
+## Data Model
+
+## Caching
+
 ## REST interface
+
+[@richardson_restful_2007]

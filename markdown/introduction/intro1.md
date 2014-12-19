@@ -8,7 +8,7 @@ Termination is a branch of theoretical computer science where programs such as a
 
 The Termination Competition is an annual event of the termination community of StarExec, where solvers from different contributors compete in several categories. In 2014 the competition was organized by my adviser, Prof. Johannes Waldman, and me. Our goal was to do both, starting the competition run as well as to present it via an automatically updated web-interface.
 
-The 2014 competition caused a total amount of 13 Gigabyte of data and needed about 90 days of CPU time on all of the 192 Quad-Core CPUs of the StarExec cluster.
+The 2014 competition caused a total amount of 13 Gigabyte of data and needed about 90 days of CPU time on all of the 192 Quad-Core CPUs of the StarExec cluster. [@waldmann_termtools_2014]
 
 Our additional goal was to be able to compare these results with those from previous ones. So we added an option to import the data from the 2007 competition hosted by the Laboratory of Computer Science at Université Paris-Sud and the following competitions hosted by the University of Innsbruck.
 

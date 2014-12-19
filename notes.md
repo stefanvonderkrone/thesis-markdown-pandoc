@@ -19,3 +19,22 @@
 * Perspective
     - benefits for other communities
 
+## 141217
+
+* Benchmark-Matching ( Solver-Matching ):
+    - contents of Benchmark (Solver) on StarExec
+    - see tag "originalfilename"
+* Queries:
+    - Use Case + Requirements
+    - historical comparison
+    - evolution of solver
+    - considere it as a main chapter
+* Chapter Requirement:
+    - short responses
+* Chapter Implementation:
+    - caching
+* Chapter Star-Exec-Presenter:
+    - sub "Data Model" / "Data Structure"
+* Chapter Evaluation -> Future Considerations:
+    - wishes for StarExec (precise)
+    - not so StarExec (?)

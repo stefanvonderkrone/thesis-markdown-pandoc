@@ -12,7 +12,7 @@ module.exports = {
         bibliography: "Master-Thesis.bib",
         mdFiles: [
             "markdown/title.md",
-            "markdown/summary.md",
+            // "markdown/summary.md",
             //"markdown/acknowledgements.md",
             "markdown/toc.md",
             "markdown/introduction/intro1.md",
@@ -24,7 +24,7 @@ module.exports = {
             "markdown/chapters/chapter5_StarExecPresenter.md",
             "markdown/chapters/chapter6_Implementation.md",
             "markdown/chapters/chapter7_Evaluation.md",
-            //"markdown/appendix.md",
+            "markdown/summary.md",
             "markdown/references.md"
         ],
         output: "master-thesis.pdf"
