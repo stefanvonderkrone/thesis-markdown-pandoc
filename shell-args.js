@@ -25,6 +25,7 @@ module.exports = {
             "markdown/chapters/chapter6_Implementation.md",
             "markdown/chapters/chapter7_Evaluation.md",
             "markdown/summary.md",
+            "markdown/glossary.md",
             "markdown/references.md"
         ],
         output: "master-thesis.pdf"

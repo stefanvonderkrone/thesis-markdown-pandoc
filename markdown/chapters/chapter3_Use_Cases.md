@@ -4,7 +4,7 @@ In this chapter I will list the use cases which the Star-Exec-Presenter is mappe
 
 ## Displaying Results and Outputs
 
-The core of StarExec is not only to run the solver on specific benchmarks but also to host the results and outputs of each run. So a major task for the Star-Exec-Presenter is to display that data in an appropriate way.
+The core of StarExec is not only to run the solver on specific benchmarks but also to host the results and outputs of each run. So a major task for the Star-Exec-Presenter is to display that data in an appropriate way. The explicit data is the result of a solver with a specific benchmark and its CPU- as well as Wallclock-Time. Additionally the solver's output is important which is accessible on StarExec with the job-pair, a unique combination within the specific job of solver and benchmark.
 
 ## Compare Results
 
@@ -12,7 +12,9 @@ Simply displaying the results and outputs of each solver-run is not enough. It i
 
 ## Querriyng
 
+As important comparing the result is as overwhelming is their amount, so a beneficial use case is querriyng the results according to specific filters. Such filters can eliminate unimportant results from the representation. For instance a benchmark is uninteresting if all solvers have the same result, so all those benchmarks can be filtered out.
 
+The user should be able to concentrate on data which meets his or her interests. This data could tell which benchmark causes incorrect results with the own solver. Also it can illustrate changes in the solvers results in comparison to past runs, fo instance a once solved benchmark could now be unsolvable. This is the data we want to querry in terms of data mining.
 
 ## Interpret Outputs as possible XML-Proofs
 
