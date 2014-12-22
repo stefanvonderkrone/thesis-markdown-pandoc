@@ -8,6 +8,8 @@ The Star-Exec-Presenter is actually the concrete work of this thesis. As a REST-
 
 ## Caching
 
+[@marlow_parallel_2013]
+
 ## REST interface
 
 [@richardson_restful_2007]
