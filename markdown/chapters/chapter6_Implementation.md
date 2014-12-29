@@ -6,6 +6,7 @@ The Star-Exec-Presenter is a web application written in Haskell and based upon t
 
 [@osullivan_real_2010]
 [@peyton_jones_haskell_2003]
+[@marlow_haskell_2010]
 
 ## Yesod Web Framework
 
