@@ -47,6 +47,12 @@ This is achieved by starting a new thread within the Star-Exec-Presenter applica
 
 This database based caching mechanism has its downside when it comes the the competition results, as they are calculated based on the results of the related jobs. And as the data of these jobs is stored in the database, there is no need for the results to be stored either. So the results have to be cached in another way which is within the application's memory. For this purpose Star-Exec-Presenter uses STM[^stm].
 
+[^stm]: Software Transactional Memory, a mechanism for concurrent programming to prevent deadlocks
+
+The reason to cache the competition results is because it takes too long to fetch the related job results from the database and do the calculations, as a usual competition has a huge amount of data to process. For instance the 2014 Termination Competition has three meta categories with a total of 19 jobs that produced an overall amount of 37.880 job-pairs. That doesn't seem to be that much but one requirement was to have short response times. So we decided to offload the computation to a separate worker thread. The results are saved within the application's memory and are accessed via STM. The calculating worker thread is the only instance which writes in this cache, all request handlers can only read from it.
+
+
+
 [@marlow_parallel_2013]
 
 ## REST interface
