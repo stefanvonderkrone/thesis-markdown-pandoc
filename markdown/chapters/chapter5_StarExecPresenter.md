@@ -33,7 +33,9 @@ All templates can be found in the `templates` folder, some are located within th
 
 ### Request Handlers
 
-The controller part of Star-Exec-Presenter is represented by the several request handlers. Each handler responds to a certain URL requested by a client application. For instance there are handlers that only return the information of a particular entity like a solver or a job, there are also handler that initiate specific requests to StarExec or display the results of a competition. The request handlers are generally managing the logic behind Star-Exec-Presenter.
+The controller part of Star-Exec-Presenter is represented by the several request handlers. Each handler responds to a certain URL[^url] requested by a client application. For instance there are handlers that only return the information of a particular entity like a solver or a job, there are also handler that initiate specific requests to StarExec or display the results of a competition. The request handlers are generally managing the logic behind Star-Exec-Presenter.
+
+[^url]: Uniform Resource Locator
 
 All handlers are implemented within the `Handler` module.
 
@@ -51,12 +53,32 @@ This database based caching mechanism has its downside when it comes the the com
 
 The reason to cache the competition results is because it takes too long to fetch the related job results from the database and do the calculations, as a usual competition has a huge amount of data to process. For instance the 2014 Termination Competition has three meta categories with a total of 19 jobs that produced an overall amount of 37.880 job-pairs. That doesn't seem to be that much but one requirement was to have short response times. So we decided to offload the computation to a separate worker thread. The results are saved within the application's memory and are accessed via STM. The calculating worker thread is the only instance which writes in this cache, all request handlers can only read from it.
 
+STM helps in this case because it can prevent deadlocks making the whole application more reliable. To achieve this goal every access to the shared memory (our cache of competition results) is being managed by transactions, much like transactions of a database. If two or more transactions try to access a resource, all but one will be aborted. A mechanism to retry a rolled back transaction ensures that they will be finished anyhow. To achieve this behavior each transaction must be very small. The actual terminology is _atomic_. It is wise to have very small transactions because STM is not _fair_ as it favors small and fast transactions over large and slow ones. STM doesn't work in FIFO[^fifo] order. [@marlow_parallel_2013]
 
+[^fifo]: First In First Out
 
-[@marlow_parallel_2013]
+<!-- Insert figure to illustrate the cache of competition results -->
+
+Star-Exec-Presenter itself only does the reading and writing process within STM. Everything else, e.g. the calculation of the competition results, is done outside of STM. Only in this way we can ensure that the transactions are very small or _atomic_.
 
 ## REST interface
 
-<!-- (list all routes and their handler) -->
+Star-Exec-Presenter is a server-side web application which receives requests and responses with an appropriate HTML presentation. These requests have to point to a valid resource, a URL. A list of important resource-URLs of the application follows:
+
+```
+/pair/#JobPairID                GET
+/proof/#Text                    GET
+/job/#JobID                     GET
+/benchmark/#BenchmarkID         GET
+/solver/#SolverID               GET
+/post_proc/#Int                 GET
+/results/#Query/*JobIds         GET
+/competition/#CompetitionInfoId GET
+/control                        GET POST
+/registered                     GET
+/import                         GET POST
+```
+
+
 
 [@richardson_restful_2007]
