@@ -63,22 +63,30 @@ Star-Exec-Presenter itself only does the reading and writing process within STM.
 
 ## REST interface
 
-Star-Exec-Presenter is a server-side web application which receives requests and responses with an appropriate HTML presentation. These requests have to point to a valid resource, a URL. A list of important resource-URLs of the application follows:
+Star-Exec-Presenter is a server-side web application which receives requests and responses with an appropriate HTML presentation. These requests have to point to a valid resource, a URL. A list of important resource-URLs of the application including their accepted HTTP methods follows:
 
 ```
-/pair/#JobPairID                GET
-/proof/#Text                    GET
 /job/#JobID                     GET
-/benchmark/#BenchmarkID         GET
 /solver/#SolverID               GET
-/post_proc/#Int                 GET
+/benchmark/#BenchmarkID         GET
+/pair/#JobPairID                GET
+/post_proc/#PostProcID          GET
 /results/#Query/*JobIds         GET
+/proof/#Text                    GET
+/registered                     GET
 /competition/#CompetitionInfoId GET
 /control                        GET POST
-/registered                     GET
 /import                         GET POST
 ```
 
+Of course, an explanation of these routes, they are called, is helpfull. The first five routes are self-explaining. They take a specific identifier and return the infos of the related entity, wether it's a job, solver, benchmark, job-pair or post-processor. The Results-Route takes a list of Job-Identifiers and returns all of their results. A special part of this route is its first dynamic path piece, the query parameter which defines a special case for this route. If there is given a specific query then the job results will be filtered according to it.
 
+The Proof-Route is directly related the the Job-Pair-Route. If a job-pair contains a proof, this route is meant to display it. The Registered-Route lists all of the participant of the 2014 Termination Competition including links to their configuration on StarExec. The Competition-Route displays the results for a specific competition.
+
+The Control-Route is an interface to start a competition wether it's a full or a small one. Requested with the default HTTP method GET this route only displays its interface form. If this form is submitted the POST method is requested and a competition will be started. The Import-Route is used to import old data from previous competitions. It has a small form with a select field and a file input to upload a file. It takes a zip file with the content which has to be defined by the select field.
+
+There are other routes that give further information as well as some routes that are older versions of the aforementioned ones. They are still accessible for legacy purposes.
+
+As Star-Exec-Presenter is meant as a simple interface for StarExec and the Termination Competition in the first place, these routes are quite simple as well. They only accept GET or POST requests and try to work according to REST.
 
 [@richardson_restful_2007]
