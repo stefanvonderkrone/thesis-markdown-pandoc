@@ -12,9 +12,10 @@ The 2014 competition caused a total amount of 13 Gigabyte of data and needed abo
 
 Our additional goal was to be able to compare these results with those from previous ones. So we added an option to import the data from the 2007 competition hosted by the Laboratory of Computer Science at Université Paris-Sud and the following competitions hosted by the University of Innsbruck.
 
-"StarExec is a cross community logic solving service developed at the University of Iowa (...)." [@starexec_about_2013] It is a technical infrastructure providing the service to run logic solvers on a powerful cluster of CPUs. It also provides an extensive web-based user interface to upload and run solvers and problems, referred to as benchmarks. A REST-based[^REST] API is utalized by the Star-Exec-Presenter.
+"StarExec is a cross community logic solving service developed at the University of Iowa (...)." [@starexec_about_2013] It is a technical infrastructure providing the service to run logic solvers on a powerful cluster of CPUs. It also provides an extensive web-based user interface to upload and run solvers and problems, referred to as benchmarks. A REST-based[^REST] API[^api] is utalized by the Star-Exec-Presenter.
 
 [^REST]: Representational state transfer, a paradigm to implement a server-client communication
+[^api]: Application programming interface, a set of components (methods, protocols, tools) for using a software
 
 The Star-Exec-Presenter is the software developed as the concrete work for this thesis. It is a web application programmed in Haskel[^Haskell] with the utalization of the Yesod Web Framework[^YesodWeb].
 
