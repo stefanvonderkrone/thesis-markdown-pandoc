@@ -10,11 +10,11 @@ _"Haskell is a general purpose, purely functional programming language incorpora
 * - general purpose -
 * - purely functional programming -
 * - higher-order functions -
-* non-strict semantics
+* - non-strict semantics -
 * static polymorphic typing
 * user-defined algebraic datatypes
 * - pattern-matching -
-* list comprehensions
+* - list comprehensions -
 * module system
 * monadic I/O system
  -->
@@ -44,7 +44,27 @@ map f (x:xs) = f x : map f xs   -- f applied to the list's head
                                 -- the list's rest
 ```
 
-The example from above also shows pattern-matching, a rich programming technique to identify certain cases for a given expression. The `map` function from above has two implementations, one for this case of the empty list which also is the base case for the recursion, and the main implementation that declares the algorithm of the function.
+The example from above also shows pattern-matching, a rich programming technique to identify certain cases for a given expression. The `map` function from above has two implementations, one for the case of the empty list which also is the base case for the recursion, and the main implementation that declares the algorithm of the function. Pattern matching helps simplifying code by reducing the usage of if-statements and alike.
+
+To stay with the `map` function, list comprehensions are another way to define this method as well as lists in general. They are similar to set comprehensions in mathematics. For example the list comprehension `[ 2*x | x <- [1..10] ]` is equivalent to the set comprehension $\{2x|x \in \mathbb{N},x \le 10\}$. [@lipovaca_learn_2012] Both expressions result in a list of even natural numbers from two to 20. Referecing the `map` function from above, an alternative implementation follows:
+
+```haskell
+map f xs = [ f x | x <- xs ]
+```
+
+Another example of list comprehensions is the solution to the first problem of Project Euler (https://projecteuler.net/problem=1). The exercise is to find the sum of all multiples of three or five below 1000:
+
+```haskell
+sum [x | x <- [3..999], x `mod` 3 == 0 || x `mod` 5 == 0]
+```
+
+Another essential feature of Haskell is the non-strict semantics. Non-strict in terms of Haskell means that every expression is evaluated by need. So, only declaring an expression doesn't invoke its evaluation until it's needed, e.g. for output. For instance a function could require to have an indexed list. This list can simply be defined as list of tuples whose first element is the index:
+
+```haskell
+let indexedList = zip [0..] "haskell"
+```
+
+Here, we have the declaration of an infinite list (`[0..]`), but which will be evaluated only up until its seventh position. These non-strict semantics in Haskell are implemented as _lazy evaluation_. This lazy evaluation leeds to the expression from above also being evaluated by need. So until it is really needed, `indexedList` is only a thunked expression. But this strategy can lead to high memory usage especially for complex algorithms, so in some cases it is advised to use strict evaluation. This strictness is implemented with the `seq` function in Haskell's `Prelude` module. Other modules with strict evaluations for example are `Data.Map.Strict` or `Data.List` the latter having a strict implementation of the `Prelude`'s `foldl` function.
 
 [@osullivan_real_2010]
 
