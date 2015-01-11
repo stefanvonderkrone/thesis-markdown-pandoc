@@ -17,13 +17,13 @@ _"Haskell is a general purpose, purely functional programming language incorpora
 * - user-defined algebraic datatypes -
 * - pattern-matching -
 * - list comprehensions -
-* module system
-* monadic I/O system
+* - module system -
+* - monadic I/O system -
  -->
 
 This quote stems from Simon Peyton Jones and his paper "Haskell 98 language and libraries: the revised report" and was used as well by Simon Marlow in his paper "Haskell 2010 Language Report". [@marlow_haskell_2010] It does sum up the important features of the Haskell programming language. In addition I want to add that Haskell has type inference and its type system is very expressive. In the following I try to explain the listed terms.
 
-Haskell is a general purpose programming language which means it can be used to develop a web-server, a desktop application as well as a simple commandline tool. It is suited for a wide range of application domains. Haskell is a purely functional programming language, that is, it follows the functional programming paradigm and every pure function has no side effect. Functional programming relies on a mathematical approach where every calculation is defined by expressions. Everything is an expression, wether it's a function or a value. Purely means, that a function only works with its input arguments and returns the same result no matter how often it is called with the same arguments. Every expression is immutable so once they are defined they cannot be changed anymore. In contrast, imperative programming languages allow mutability and functions are subroutines that can have side effects. A side effect for instance can be a simple tracing that doesn't effect the function's result or it can be the change of a global state.
+Haskell is a general purpose programming language which means it can be used to develop a web-server, a desktop application as well as a simple commandline tool. It is suited for a wide range of application domains. Haskell is a purely functional programming language, that is, it follows the functional programming paradigm and every pure function has no side effect. Functional programming relies on a mathematical approach where every calculation is defined by expressions. Everything is an expression, wether it's a function or a value. Purely means, that a function only works with its input arguments and returns the same result no matter how often it is called with the same arguments. Every expression is immutable so once they are defined they cannot be changed anymore. Haskell code therefore is easily testable and even proofable. In contrast, imperative programming languages allow mutability and functions are subroutines that can have side effects. A side effect for instance can be a simple tracing that doesn't effect the function's result or it can be the change of a global state.
 
 ```haskell
 -- example of a pure function
@@ -91,10 +91,71 @@ data Maybe a = Nothing | Just a
 
 This datatype is used for computations that can have no result or that require optional arguments. The `Nothing` constructor means that there is no value, whereas the `Just` constructor wraps a result or an optional argument. The `Maybe` is usefull because it prevents `undefined` or `null` values via the type system. In Java, for example, careless developed programs can pass the compiler but also result in a `NullPointerException` whose cause can be difficult to resolve. Of course, that doesn't mean that a Haskell program doesn't have errors, but the type system and the compiler helps to reduce them or event prevent them all.
 
+Haskell has a distinct module system, where each module contains a well-matched set of functions, types and type-classes. The Haskell code base is separated into a large number of modules, each one serving a certain kind of purpose. Each Haskell program has a main module which contains the main function as well as a set of other modules. It is important to know that, without any additional language extensions, a bunch of modules cannot be defined circularly, that is module A cannot import module B it this already imports module A.
+
+All these features and benefits of Haskell are of no use if it can't communicate with the real world, that is doing input/output. So, Haskell has an appropriate I/O system which is also monadic[^monad]. That means that every function that operates within the IO-Monad has a special type signature. Below are some examples:
+
+[^monad]: A Monad is an abstract datatype, that wraps a (primitive) value in a context and binds it to a function operating within that context
+
+```haskell
+putChar     :: Char -> IO ()
+putStrLn    :: String -> IO ()
+getLine     :: IO String
+readFile    :: FilePath -> IO String
+writeFile   :: FilePath -> String -> IO ()
+```
+
+All functions return a value within the context of the IO-Monad. To access the content it must be bound to a function that processes it. For example, the `putStrLn` function can be implemented via the `putChar` function and a monadic composition (`(>>)`):
+
+```haskell
+putStrLn' s = mapM_ putChar s >> putChar '\n'
+```
+
+This implementation uses the monadic version of the `map` function to put each `Char` of the given `String` to the output followed by a newline. To simplify the work with the IO-Monad or Monads in general Haskell has the do-notation which I want to explain with the following example:
+
+```haskell
+func_do f g h = do
+    a <- f              -- binds the wrapped value of f to a
+    b <- g              -- binds the wrapped value of g to b
+    c <- h              -- binds the wrapped value of h to c
+    return (a, b, c)    -- wraps the result in the default context
+
+func_bind f g h =
+    f >>= \a ->
+        g >>= \b ->
+            h >>= \c ->
+                return (a, b, c)
+```
+
+Both functions essentially do the same. They take three monadic values (e.g. `Maybe a`) and bind the content of these values to `a`, `b` and `c`. The first function uses do-notation, the second one uses the bind-Operator (`(>>=)`). The do-notation is a sugared way of using the bind-Operator, that is the compiler transforms the code of `func_do` to the code of `func_bind`. It is the same with all functions of the IO-Monad. But there is one important note: The IO-Monad is impure. What does this mean? All functions in Haskell are pure unless they use the IO-Monad. Because this Monad communicates with the real world, Haskell has no control of this communication. That means, that every call of an IO-function the result is not garanteed to be the same. A File could have changed since the last time it was read. Another good example is the operation system's random number generator. Each time, it produces another value, so this process can never be pure.
+
 [@osullivan_real_2010]
 
-
 ## Yesod Web Framework
+
+The Yesod Web Framework is a set of tools and libraries build with Haskell. It aims to improve the development of server-side, RESTful web applications by providing type-safety, conciseness and performance. It is devided into several components that together form the final web application. Yesod consists of an object-relational mapping for the communication with a database, several domain-specific languages for routes, templates and the database types, it has session- and forms-handling as well as the support for authentication, authorization or internationalization.
+
+The basis of Yesod is the Warp server which is a fast web server build in Haskell. It is the main implementation of the Web Application Interface which in turn is generalized interface for building web server. It generally considers the nature of the web infrastructure, where the communication essentially works like a function: a client sends a request und gets a response in return. This communication can be illustrated with the following type signature:
+
+```haskell
+askServer :: Request -> Response
+```
+
+WAI aims to be an efficient interface by relying an lazy IO, which leads to a small memory footprint. An example of a small WAI implementation follows below:
+
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+import Network.Wai
+import Network.HTTP.Types (status200)
+import Network.Wai.Handler.Warp (run)
+
+application _ = return $
+  responseLBS status200 [("Content-Type", "text/plain")] "Hello World"
+
+main = run 3000 application
+```
+
+This program takes a request and responses with the text "Hello World", regardless of what the request may contain.
 
 [@snoyman_developing_2012]
 
