@@ -11,15 +11,17 @@ _"Haskell is a general purpose, purely functional programming language incorpora
 * - purely functional programming -
 * - higher-order functions -
 * - non-strict semantics -
-* static polymorphic typing
-* user-defined algebraic datatypes
+* - type inference -
+* - expressive type system -
+* - static polymorphic typing -
+* - user-defined algebraic datatypes -
 * - pattern-matching -
 * - list comprehensions -
 * module system
 * monadic I/O system
  -->
 
-This quote stems from Simon Peyton Jones and his paper "Haskell 98 language and libraries: the revised report" and was used as well by Simon Marlow in his paper "Haskell 2010 Language Report". [@marlow_haskell_2010] It does sum up the important features of the Haskell programming language. In the following I try to explain the listed terms.
+This quote stems from Simon Peyton Jones and his paper "Haskell 98 language and libraries: the revised report" and was used as well by Simon Marlow in his paper "Haskell 2010 Language Report". [@marlow_haskell_2010] It does sum up the important features of the Haskell programming language. In addition I want to add that Haskell has type inference and its type system is very expressive. In the following I try to explain the listed terms.
 
 Haskell is a general purpose programming language which means it can be used to develop a web-server, a desktop application as well as a simple commandline tool. It is suited for a wide range of application domains. Haskell is a purely functional programming language, that is, it follows the functional programming paradigm and every pure function has no side effect. Functional programming relies on a mathematical approach where every calculation is defined by expressions. Everything is an expression, wether it's a function or a value. Purely means, that a function only works with its input arguments and returns the same result no matter how often it is called with the same arguments. Every expression is immutable so once they are defined they cannot be changed anymore. In contrast, imperative programming languages allow mutability and functions are subroutines that can have side effects. A side effect for instance can be a simple tracing that doesn't effect the function's result or it can be the change of a global state.
 
@@ -58,13 +60,36 @@ Another example of list comprehensions is the solution to the first problem of P
 sum [x | x <- [3..999], x `mod` 3 == 0 || x `mod` 5 == 0]
 ```
 
-Another essential feature of Haskell is the non-strict semantics. Non-strict in terms of Haskell means that every expression is evaluated by need. So, only declaring an expression doesn't invoke its evaluation until it's needed, e.g. for output. For instance a function could require to have an indexed list. This list can simply be defined as list of tuples whose first element is the index:
+Another essential feature of Haskell is the non-strict semantics. Non-strict in terms of Haskell means that every expression is evaluated by need. So, only declaring an expression doesn't invoke its evaluation until it's needed, e.g. for output. For instance the fibonacci sequence can be seen as an infinite list. This sequence can also be implemented via a list comprehension:
 
 ```haskell
-let indexedList = zip [0..] "haskell"
+let fibs = 0 : 1 : [ a + b | (a, b) <- zip fibs (tail fibs)]
 ```
 
-Here, we have the declaration of an infinite list (`[0..]`), but which will be evaluated only up until its seventh position. These non-strict semantics in Haskell are implemented as _lazy evaluation_. This lazy evaluation leeds to the expression from above also being evaluated by need. So until it is really needed, `indexedList` is only a thunked expression. But this strategy can lead to high memory usage especially for complex algorithms, so in some cases it is advised to use strict evaluation. This strictness is implemented with the `seq` function in Haskell's `Prelude` module. Other modules with strict evaluations for example are `Data.Map.Strict` or `Data.List` the latter having a strict implementation of the `Prelude`'s `foldl` function.
+Here, we have the declaration of an infinite list, but which will be evaluated only up until its seventh position. These non-strict semantics in Haskell are implemented as _lazy evaluation_ which leeds to the expression from above also being evaluated by need. So until it is really needed, `fibs` is only a thunked[^thunk] expression. But this strategy can lead to high memory usage especially for complex algorithms, so in some cases it is advised to use strict evaluation which can be used with the `seq` function in Haskell's `Prelude` module. Other modules with strict evaluations for example are `Data.Map.Strict` or `Data.List` the latter having a strict implementation of the `Prelude`'s `foldl` function. Especially this function can lead to a stack overflow with a large list.[^foldl]
+
+[^thunk]: a value that is yet to be evaluated
+[^foldl]: https://www.haskell.org/haskellwiki/Foldr_Foldl_Foldl%27
+
+Haskell has a rich type system which can automatically infer the type of an expression. For example the fibonacci sequence from above has the type `fibs :: Num b => [b]` which was inferred bei the `(+)` operator's type (`(+) :: Num a => a -> a -> a`). Not all types can be inferred and the compiler outputs a compiler error, so a type signature should be added. In most cases these signatures are optional but also can help improving the readability of the code. These signatures doesn't contain any special type information because they are polymorphic, that is, they can be used with any type that meets the functions requirements, may it be `Int` or `Double`. Polymorphic types are denoted by small alphanumeric characters like `a`, `b` or `t0`. They can be restricted by a type-class which is a set of functions. The `(+)` operator is a function of the `Num` type-class which is a set of functions to operate on numerical values. Type-classes are similar to interfaces of imperative programming languages like Java.
+
+With Haskell a developer can declare custom algebraic datatypes. What that means is that a type can be defined by the algebraic operations _sum_ and _product_, where a _sum_ is a group of alternative data constructors and _product_ is the combination of them. Below are some examples:
+
+```haskell
+-- sum of polymorphic types
+data Either a b = Left a | Right b
+
+-- product of polymorphic types
+data Pair a b = Pair a b
+```
+
+The `Either` datatype is a special type that is used for computations that can result in an error, where the `Left` constructor contains the error and the `Right` constructor holds the successful result. This leads to Haskell's expressiveness which is one of the benefits of its type system. The `Either` datatype explains that a function can return an error, so a developer has to consider the returned value. Java in contrast is more verbose by forcing to add a `throws` statement to the method definition. A developer has to use a `try ... catch` block to manage an error. Another example for the expressive type system of Haskell is the `Maybe` datatype whose signature follows:
+
+```haskell
+data Maybe a = Nothing | Just a
+```
+
+This datatype is used for computations that can have no result or that require optional arguments. The `Nothing` constructor means that there is no value, whereas the `Just` constructor wraps a result or an optional argument. The `Maybe` is usefull because it prevents `undefined` or `null` values via the type system. In Java, for example, careless developed programs can pass the compiler but also result in a `NullPointerException` whose cause can be difficult to resolve. Of course, that doesn't mean that a Haskell program doesn't have errors, but the type system and the compiler helps to reduce them or event prevent them all.
 
 [@osullivan_real_2010]
 
