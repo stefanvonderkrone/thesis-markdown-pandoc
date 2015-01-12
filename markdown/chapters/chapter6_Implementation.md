@@ -4,7 +4,7 @@ The Star-Exec-Presenter is a web application written in Haskell and based upon t
 
 ## Haskell
 
-_"Haskell is a general purpose, purely functional programming language incorporating many recent innovations in programming language design. Haskell provides higher-order functions, non-strict semantics, static polymorphic typing, user-defined algebraic datatypes, pattern-matching, list comprehensions, a module system, a monadic I/O system, and a rich set of primitive datatypes, including lists, arrays, arbitrary and fixed precision integers, and floating-point numbers. Haskell is both the culmination and solidification of many years of research on non-strict functional languages."_ [@peyton_jones_haskell_2003]
+_"Haskell is a general purpose, purely functional programming language incorporating many recent innovations in programming language design. Haskell provides higher-order functions, non-strict semantics, static polymorphic typing, user-defined algebraic datatypes, pattern-matching, list comprehensions, a module system, a monadic I/O system, and a rich set of primitive datatypes, including lists, arrays, arbitrary and fixed precision integers, and floating-point numbers. Haskell is both the culmination and solidification of many years of research on non-strict functional languages."_ [@peyton_jones_haskell_2003, @marlow_haskell_2010]
 
 <!-- 
 * - general purpose -
@@ -21,7 +21,7 @@ _"Haskell is a general purpose, purely functional programming language incorpora
 * - monadic I/O system -
  -->
 
-This quote stems from Simon Peyton Jones and his paper "Haskell 98 language and libraries: the revised report" and was used as well by Simon Marlow in his paper "Haskell 2010 Language Report". [@marlow_haskell_2010] It does sum up the important features of the Haskell programming language. In addition I want to add that Haskell has type inference and its type system is very expressive. In the following I try to explain the listed terms.
+This quote stems from Simon Peyton Jones and his paper "Haskell 98 language and libraries: the revised report" as well as from the paper "Haskell 2010 Language Report" by Simon Marlow. It does sum up the important features of the Haskell programming language. In addition I want to add that Haskell has type inference and its type system is very expressive. In the following I try to explain the listed terms.
 
 Haskell is a general purpose programming language which means it can be used to develop a web-server, a desktop application as well as a simple commandline tool. It is suited for a wide range of application domains. Haskell is a purely functional programming language, that is, it follows the functional programming paradigm and every pure function has no side effect. Functional programming relies on a mathematical approach where every calculation is defined by expressions. Everything is an expression, wether it's a function or a value. Purely means, that a function only works with its input arguments and returns the same result no matter how often it is called with the same arguments. Every expression is immutable so once they are defined they cannot be changed anymore. Haskell code therefore is easily testable and even proofable. In contrast, imperative programming languages allow mutability and functions are subroutines that can have side effects. A side effect for instance can be a simple tracing that doesn't effect the function's result or it can be the change of a global state.
 
@@ -35,6 +35,8 @@ mulM a b = do
     return (a * b)
 ```
 
+### Higher-Order Functions
+
 Haskell has higher-order function and emphasizes their usage. Higher-order function are functions that require functions as input parameters or return a function. Therefore functions are data that can be passed round. Thanks to currying all functions are higher-order functions and thereby expressions. Currying means that a function always returns a new function if it isn't called with the full list of arguments.
 
 ```haskell
@@ -46,7 +48,11 @@ map f (x:xs) = f x : map f xs   -- f applied to the list's head
                                 -- the list's rest
 ```
 
+### Pattern-Matching
+
 The example from above also shows pattern-matching, a rich programming technique to identify certain cases for a given expression. The `map` function from above has two implementations, one for the case of the empty list which also is the base case for the recursion, and the main implementation that declares the algorithm of the function. Pattern matching helps simplifying code by reducing the usage of if-statements and alike.
+
+### List Comprehensions
 
 To stay with the `map` function, list comprehensions are another way to define this method as well as lists in general. They are similar to set comprehensions in mathematics. For example the list comprehension `[ 2*x | x <- [1..10] ]` is equivalent to the set comprehension $\{2x|x \in \mathbb{N},x \le 10\}$. [@lipovaca_learn_2012] Both expressions result in a list of even natural numbers from two to 20. Referecing the `map` function from above, an alternative implementation follows:
 
@@ -60,6 +66,8 @@ Another example of list comprehensions is the solution to the first problem of P
 sum [x | x <- [3..999], x `mod` 3 == 0 || x `mod` 5 == 0]
 ```
 
+### Non-Strict Semantics, Lazy Evaluation
+
 Another essential feature of Haskell is the non-strict semantics. Non-strict in terms of Haskell means that every expression is evaluated by need. So, only declaring an expression doesn't invoke its evaluation until it's needed, e.g. for output. For instance the fibonacci sequence can be seen as an infinite list. This sequence can also be implemented via a list comprehension:
 
 ```haskell
@@ -71,7 +79,11 @@ Here, we have the declaration of an infinite list, but which will be evaluated o
 [^thunk]: a value that is yet to be evaluated
 [^foldl]: https://www.haskell.org/haskellwiki/Foldr_Foldl_Foldl%27
 
+### Type System, Type Inference
+
 Haskell has a rich type system which can automatically infer the type of an expression. For example the fibonacci sequence from above has the type `fibs :: Num b => [b]` which was inferred bei the `(+)` operator's type (`(+) :: Num a => a -> a -> a`). Not all types can be inferred and the compiler outputs a compiler error, so a type signature should be added. In most cases these signatures are optional but also can help improving the readability of the code. These signatures doesn't contain any special type information because they are polymorphic, that is, they can be used with any type that meets the functions requirements, may it be `Int` or `Double`. Polymorphic types are denoted by small alphanumeric characters like `a`, `b` or `t0`. They can be restricted by a type-class which is a set of functions. The `(+)` operator is a function of the `Num` type-class which is a set of functions to operate on numerical values. Type-classes are similar to interfaces of imperative programming languages like Java.
+
+### Algebraic Datatypes
 
 With Haskell a developer can declare custom algebraic datatypes. What that means is that a type can be defined by the algebraic operations _sum_ and _product_, where a _sum_ is a group of alternative data constructors and _product_ is the combination of them. Below are some examples:
 
@@ -91,7 +103,11 @@ data Maybe a = Nothing | Just a
 
 This datatype is used for computations that can have no result or that require optional arguments. The `Nothing` constructor means that there is no value, whereas the `Just` constructor wraps a result or an optional argument. The `Maybe` is usefull because it prevents `undefined` or `null` values via the type system. In Java, for example, careless developed programs can pass the compiler but also result in a `NullPointerException` whose cause can be difficult to resolve. Of course, that doesn't mean that a Haskell program doesn't have errors, but the type system and the compiler helps to reduce them or event prevent them all.
 
+### Modules
+
 Haskell has a distinct module system, where each module contains a well-matched set of functions, types and type-classes. The Haskell code base is separated into a large number of modules, each one serving a certain kind of purpose. Each Haskell program has a main module which contains the main function as well as a set of other modules. It is important to know that, without any additional language extensions, a bunch of modules cannot be defined circularly, that is module A cannot import module B it this already imports module A.
+
+### Input/Output, Monads
 
 All these features and benefits of Haskell are of no use if it can't communicate with the real world, that is doing input/output. So, Haskell has an appropriate I/O system which is also monadic[^monad]. That means that every function that operates within the IO-Monad has a special type signature. Below are some examples:
 
@@ -133,7 +149,9 @@ Both functions essentially do the same. They take three monadic values (e.g. `Ma
 
 ## Yesod Web Framework
 
-The Yesod Web Framework is a set of tools and libraries build with Haskell. It aims to improve the development of server-side, RESTful web applications by providing type-safety, conciseness and performance. It is devided into several components that together form the final web application. Yesod consists of an object-relational mapping for the communication with a database, several domain-specific languages for routes, templates and the database types, it has session- and forms-handling as well as the support for authentication, authorization or internationalization.
+The Yesod Web Framework is a set of tools and libraries build with Haskell. It aims to improve the development of server-side, RESTful web applications by providing type-safety, conciseness and performance. It is devided into several components that together form the final web application. Yesod consists of an object-relational mapping for the communication with a database, several domain-specific languages (DSLs) for routes, templates and the database types, it has session- and forms-handling as well as the support for authentication, authorization or internationalization. All DSLs are implemented with Template Haskell, an extension to the GHC[^ghc] to enable metaprogramming. Template Haskell code will be transformed to actual Haskell while compiling. [@sheard_template_2002]
+
+[^ghc]: Glaskow Haskell Compiler, the most used compiler infrastructure for Haskell
 
 The basis of Yesod is the Warp server which is a fast web server build in Haskell. It is the main implementation of the Web Application Interface which in turn is generalized interface for building web server. It generally considers the nature of the web infrastructure, where the communication essentially works like a function: a client sends a request und gets a response in return. This communication can be illustrated with the following type signature:
 
@@ -149,17 +167,75 @@ import Network.Wai
 import Network.HTTP.Types (status200)
 import Network.Wai.Handler.Warp (run)
 
-application _ = return $
+application _ respond = respond $
   responseLBS status200 [("Content-Type", "text/plain")] "Hello World"
 
 main = run 3000 application
 ```
 
-This program takes a request and responses with the text "Hello World", regardless of what the request may contain.
+This program takes a request and responses with the text "Hello World", regardless of what the request may contain. A more complex example considers the requested path (route) and responds according to that:
+
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+ 
+import Network.Wai
+import Network.Wai.Handler.Warp
+import Network.HTTP.Types (status200)
+import Blaze.ByteString.Builder (copyByteString)
+import qualified Data.ByteString.UTF8 as BU
+import Data.Monoid
+ 
+main = do
+  putStrLn $ "Listening on port 3000"
+  run 3000 app
+ 
+app req respond = do
+  let res = case pathInfo req of
+        ["yay"] -> yay
+        ["foo","bar"] -> foobar
+        x -> index x
+  respond res
+ 
+yay = responseBuilder status200
+  [ ("Content-Type", "text/plain") ]
+  $ mconcat $ map copyByteString [ "yay" ]
+ 
+index x = responseBuilder status200
+  [("Content-Type", "text/html")] $ mconcat $ map copyByteString
+  [ "<p>Hello from ", BU.fromString $ show x, "!</p>"
+  , "<p><a href='/yay'>yay</a></p>\n" ]
+
+foobar = responseBuilder status200
+  [("Content-Type", "text/html")] $ mconcat $ map copyByteString
+  [ "<p>Hello from foobar! ;)</p>" ]
+```
 
 [@snoyman_developing_2012]
 
 ### Routes
+
+Yesod has a more complex mechanism for handling requests build atop of WAI and Warp. The routes are defined via a special DSL which concentrates on the path and method of each request. A path is devided into one or more path pieces each one being static or dynamic, where dynamic parts are representated by a distinct type. There can be can be a single dynamic path piece as well as any number. Each path is followed by the handler resource and the supported method which can be a standard HTTP method or even a custom one. The handler resource is the connection to the Haskell code. Template Haskell generates a handler function for each route and method as well as special datatype representing the route. This datatype enables typesafe URLs. In the section "REST interface" in chapter six I showed an example of the routes DLS. Below is an explaining example:
+
+```
+-- the home route
+-- generates the handler "getHome"
+-- "HomeR" is the datatype for this route
+/       HomeR   GET
+
+-- the list of users
+-- generates the handler "getListUsers" and "postListUsers"
+-- "ListUsersR" is the datatype for this route
+/users  ListUsersR  GET POST
+
+-- generates the handler "getUser" and "postUser"
+-- "UserR UserId" is the datatype for this route
+/users/#UserId  UserR GET POST
+
+-- generates the handler "getList"
+-- "ListR [Text]" is the datatype for this route
+-- "Texts" is a type synomym for "[Text]"
+/list/*Texts    ListR   GET
+```
 
 ### Templates
 
