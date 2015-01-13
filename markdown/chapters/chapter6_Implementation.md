@@ -80,6 +80,13 @@ data Either a b = Left a | Right b
 
 -- product of polymorphic types
 data Pair a b = Pair a b
+
+-- a record datatype
+data Record a b =
+  Record
+    { memberA :: a
+    , memberB :: b
+    }
 ```
 
 The `Either` datatype is a special type that is used for computations that can result in an error, where the `Left` constructor contains the error and the `Right` constructor holds the successful result. This leads to Haskell's expressiveness which is one of the benefits of its type system. The `Either` datatype explains that a function can return an error, so a developer has to consider the returned value. Java in contrast is more verbose by forcing to add a `throws` statement to the method definition. A developer has to use a `try ... catch` block to manage an error. Another example for the expressive type system of Haskell is the `Maybe` datatype whose signature follows:
@@ -197,8 +204,6 @@ foobar = responseBuilder status200
   [ "<p>Hello from foobar! ;)</p>" ]
 ```
 
-[@snoyman_developing_2012]
-
 ### Routes
 
 Yesod has a more complex mechanism for handling requests build atop of WAI and Warp. The routes are defined via a special DSL which concentrates on the path and method of each request. A path is devided into one or more path pieces each one being static or dynamic, where dynamic parts are representated by a distinct type. There can be can be a single dynamic path piece as well as any number. Each path is followed by the handler resource and the supported method which can be a standard HTTP method or even a custom one. The handler resource is the connection to the Haskell code. Template Haskell generates a handler function for each route and method as well as special datatype representing the route. This datatype enables typesafe URLs. In the section "REST interface" in chapter six I showed an example of the routes DSL. Below is an explaining example:
@@ -277,3 +282,23 @@ The shakespearean templates are round out with the DLSs Julius for JavaScript an
 ```
 
 ### Persistence
+
+For the communication with and the integration of a database, Yesod relies on the persistent framework. This framework enables a generalized way of working with the database regardless of its kind, may it be SQL or NoSQL. Even for persistent datatypes there is a DSL which simplifies their declaration as there a many special types incorporating. Below is an example:
+
+```
+User
+    ident Text
+    password Text Maybe
+    UniqueUser ident
+```
+
+This is a simple example of representation of a user in the database. Just like most DSLs, this one is indentation based, too. It declares the type `User` with two member and a uniqueness constraint. Each member is defined by its name followed by its type. Unlike Haskell where an optional type is defined by `Maybe a`, the persistent DSL requires `Maybe` to be at the end of the declaration. A unique constraint is defined with the prefix `Unique` to the type's name as well as the names of one or more members of the type. From this definition several types are generated. First and foremost a record datatype will be defined representing the actual type. This datatype is made instance of several type-classes to make them compatible with the persistent interface. Additionally a data constructor is available to represent a unique instance of the data in the database. There are also several datatype for filtering the data table by specific constraints. Some example outcomes follow:
+
+```haskell
+data User = User { ident :: Text, password :: Maybe Text }
+
+data UniqueUser User
+```
+
+[@snoyman_developing_2012]
+<!-- add latest (online) version of book as reference -->
