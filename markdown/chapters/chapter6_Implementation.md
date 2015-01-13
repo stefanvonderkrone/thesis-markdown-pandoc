@@ -230,11 +230,13 @@ Yesod has a more complex mechanism for handling requests build atop of WAI and W
 
 ### Templates
 
-Yesod uses templates for HTML, JavaScript and CSS as type-safe expressions which are inserted into the application at compile time. Again, Template Haskell takes care of them. Templates can are inserted into the handler functions via Quasi-Quoters, some of which take the template code while others need to get the filename of the template. So, Yesod is very flexible.
+Yesod uses templates for HTML, JavaScript and CSS[^css] as type-safe expressions which are inserted into the application at compile time. Again, Template Haskell takes care of them. Templates can are inserted into the handler functions via Quasi-Quoters, some of which take the template code while others need to get the filename of the template. So, Yesod is very flexible.
+
+[^css]: Cascading Stylesheet
 
 In Yesod all template DSLs are named after a Shakespear charactor. For HTML, there is the Hamlet markup language:
 
-```
+```html
 <div>
   <h1>#{myTitle}
   <p>
@@ -243,12 +245,35 @@ In Yesod all template DSLs are named after a Shakespear charactor. For HTML, the
     <p>val
   $nothing
     <p>There is Nothing to show here
-  <ul>
-    $forall item <- someList
-      <li>#{show item}
+  $if null someList
+    <ul>
+      $forall item <- someList
+        <li>#{show item}
+  $else
+    <p>The List is empty
 ^{footerWidget}
 ```
 
-As you can see, the syntax is very similar to real HTML. But, it is important to note, that Hamlet is mostly indentation based. Mostly means, that indentation is used for block elements like `div`, `p` or headlines, so this elements doesn't have a closing tag in Hamlet. Actually they would cause a compiletime error. Inline elements such as anchor tags (`<a href=""></a>) must have a closing tag.
+As you can see, the syntax is very similar to real HTML. But, it is important to note, that Hamlet is mostly indentation based. _Mostly_ means, that indentation is used for block elements like `div`, `p` or headlines, so these elements doesn't have a closing tag in Hamlet. Actually they would cause a compiletime error. Inline elements such as anchor tags (`<a href=""></a>`) must have a closing tag. The integration with actual Haskell code has several incarnations. The first example is the interpolation of the expression `myTitle` which is bracketed by `#{...}`. It will be inserted into the the HTML code with the `toHtml` function of the `ToHtml` type-class. So every expression must be an instance of this type-class to be interpolated. The next feature of Hamlet is typesafe URLs which incorporates with the routes definition. The resource datatypes from the routes DSL can be used here. So an expression bracketed by `@{...}` generates a typesafe URL within a `href` attribute. This is possible for all attributes containing a path to a resource.
+
+Another feature is the special treatment of `Maybe` values as well as lists. Here, special statements intialize Haskell code which handles the values. So a `Maybe` value will be unwrapped (`$maybe`) or an optional information can be shown if there is `Nothing` (`$nothing`). The same applies to lists where the statement `$forall` indicates a loop to process all items of a list. Additionally, there are logical statements like `$if`/`$else` as well as `$case`/`$of`, the latter also supporting pattern matching. And to shorten inconveniently long expressions a new one can be declared via `$with shortExp <- longExp`.
+
+The shakespearean templates are round out with the DLSs Julius for JavaScript and Lucius as well as Cassius for CSS. Julius is basically JavaScript with the features of interpolation. Lucius and Cassius are both an optimized subset of CSS equivalent to the likes of SASS[^sass] or Less[^less]. They feature nested blocks, interpolated expressions, variable declaration as well as mixins. Mixins are reusable code blocks, e.g. for dealing with vendor prefixes. Whereas Lucius is more like original CSS with curly brackets enclosing the CSS statements, Cassius is intendation based. Below is an code example for Lucius taken from Star-Exec-Presenter:
+
+[^sass]: a dynamic stylesheet language for CSS (http://sass-lang.com/)
+[^less]: a dynamic stylesheet language for CSS (http://lesscss.org/)
+
+```css
+@colorYes: #80FFB0;
+...
+
+.table > tfoot > tr {
+    > td.solver-yes,
+    > th.solver-yes {
+        background-color: #{colorYes};
+    }
+    ...
+}
+```
 
 ### Persistence
