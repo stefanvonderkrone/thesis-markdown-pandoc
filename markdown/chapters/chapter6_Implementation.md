@@ -6,21 +6,6 @@ The Star-Exec-Presenter is a web application written in Haskell and based upon t
 
 _"Haskell is a general purpose, purely functional programming language incorporating many recent innovations in programming language design. Haskell provides higher-order functions, non-strict semantics, static polymorphic typing, user-defined algebraic datatypes, pattern-matching, list comprehensions, a module system, a monadic I/O system, and a rich set of primitive datatypes, including lists, arrays, arbitrary and fixed precision integers, and floating-point numbers. Haskell is both the culmination and solidification of many years of research on non-strict functional languages."_ [@peyton_jones_haskell_2003, @marlow_haskell_2010]
 
-<!-- 
-* - general purpose -
-* - purely functional programming -
-* - higher-order functions -
-* - non-strict semantics -
-* - type inference -
-* - expressive type system -
-* - static polymorphic typing -
-* - user-defined algebraic datatypes -
-* - pattern-matching -
-* - list comprehensions -
-* - module system -
-* - monadic I/O system -
- -->
-
 This quote stems from Simon Peyton Jones and his paper "Haskell 98 language and libraries: the revised report" as well as from the paper "Haskell 2010 Language Report" by Simon Marlow. It does sum up the important features of the Haskell programming language. In addition I want to add that Haskell has type inference and its type system is very expressive. In the following I try to explain the listed terms.
 
 Haskell is a general purpose programming language which means it can be used to develop a web-server, a desktop application as well as a simple commandline tool. It is suited for a wide range of application domains. Haskell is a purely functional programming language, that is, it follows the functional programming paradigm and every pure function has no side effect. Functional programming relies on a mathematical approach where every calculation is defined by expressions. Everything is an expression, wether it's a function or a value. Purely means, that a function only works with its input arguments and returns the same result no matter how often it is called with the same arguments. Every expression is immutable so once they are defined they cannot be changed anymore. Haskell code therefore is easily testable and even proofable. In contrast, imperative programming languages allow mutability and functions are subroutines that can have side effects. A side effect for instance can be a simple tracing that doesn't effect the function's result or it can be the change of a global state.
@@ -34,6 +19,8 @@ mulM a b = do
     putStrLn ("multiplying " ++ (show a) ++ " with " ++ (show b))
     return (a * b)
 ```
+
+It is important to note that, unlike programming languages like Java or C, Haskell is indentation based. So, there are no blocks surrounded by curly brackets, but every whitespace at the beginning of each line has a meaning to the program.
 
 ### Higher-Order Functions
 
@@ -214,29 +201,54 @@ foobar = responseBuilder status200
 
 ### Routes
 
-Yesod has a more complex mechanism for handling requests build atop of WAI and Warp. The routes are defined via a special DSL which concentrates on the path and method of each request. A path is devided into one or more path pieces each one being static or dynamic, where dynamic parts are representated by a distinct type. There can be can be a single dynamic path piece as well as any number. Each path is followed by the handler resource and the supported method which can be a standard HTTP method or even a custom one. The handler resource is the connection to the Haskell code. Template Haskell generates a handler function for each route and method as well as special datatype representing the route. This datatype enables typesafe URLs. In the section "REST interface" in chapter six I showed an example of the routes DLS. Below is an explaining example:
+Yesod has a more complex mechanism for handling requests build atop of WAI and Warp. The routes are defined via a special DSL which concentrates on the path and method of each request. A path is devided into one or more path pieces each one being static or dynamic, where dynamic parts are representated by a distinct type. There can be can be a single dynamic path piece as well as any number. Each path is followed by the handler resource and the supported method which can be a standard HTTP method or even a custom one. The handler resource is the connection to the Haskell code. Template Haskell generates a handler function for each route and method as well as special datatype representing the route. This datatype enables typesafe URLs. In the section "REST interface" in chapter six I showed an example of the routes DSL. Below is an explaining example:
 
 ```
 -- the home route
 -- generates the handler "getHome"
 -- "HomeR" is the datatype for this route
-/       HomeR   GET
+/               HomeR       GET
 
 -- the list of users
 -- generates the handler "getListUsers" and "postListUsers"
 -- "ListUsersR" is the datatype for this route
-/users  ListUsersR  GET POST
+/users          ListUsersR  GET POST
 
 -- generates the handler "getUser" and "postUser"
 -- "UserR UserId" is the datatype for this route
-/users/#UserId  UserR GET POST
+/users/#UserId  UserR       GET POST
 
 -- generates the handler "getList"
 -- "ListR [Text]" is the datatype for this route
 -- "Texts" is a type synomym for "[Text]"
-/list/*Texts    ListR   GET
+/list/*Texts    ListR       GET
+
+-- special routes for static files and authentication
+/static StaticR Static getStatic
+/auth   AuthR   Auth   getAuth
 ```
 
 ### Templates
+
+Yesod uses templates for HTML, JavaScript and CSS as type-safe expressions which are inserted into the application at compile time. Again, Template Haskell takes care of them. Templates can are inserted into the handler functions via Quasi-Quoters, some of which take the template code while others need to get the filename of the template. So, Yesod is very flexible.
+
+In Yesod all template DSLs are named after a Shakespear charactor. For HTML, there is the Hamlet markup language:
+
+```
+<div>
+  <h1>#{myTitle}
+  <p>
+    <a href="@{MyCustomRouteR}">my custom route</a>
+  $maybe val <- maybeVal
+    <p>val
+  $nothing
+    <p>There is Nothing to show here
+  <ul>
+    $forall item <- someList
+      <li>#{show item}
+^{footerWidget}
+```
+
+As you can see, the syntax is very similar to real HTML. But, it is important to note, that Hamlet is mostly indentation based. Mostly means, that indentation is used for block elements like `div`, `p` or headlines, so this elements doesn't have a closing tag in Hamlet. Actually they would cause a compiletime error. Inline elements such as anchor tags (`<a href=""></a>) must have a closing tag.
 
 ### Persistence
