@@ -28,5 +28,6 @@ module.exports = {
             "markdown/glossary.md",
             "markdown/references.md"
         ],
+        listing: "listings-setup.tex",
         output: "master-thesis.pdf"
     };

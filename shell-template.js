@@ -5,4 +5,7 @@ module.exports = "pandoc " +
         "--chapters " + 
         "--bibliography=<%= bibliography %> " +
         "<% _.forEach(mdFiles, function(f) { %><%= f %> <% }); %>" +
+        "<% if (typeof listing !== 'undefined') {%>" +
+        "--listings -H <%= listing %> " +
+        "<%}%>" +
         "-o <%= output %>";
