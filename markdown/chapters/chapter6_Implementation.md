@@ -289,15 +289,67 @@ For the communication with and the integration of a database, Yesod relies on th
 User
     ident Text
     password Text Maybe
+    name Text
+    gender Gender
     UniqueUser ident
+    deriving Show
 ```
 
-This is a simple example of representation of a user in the database. Just like most DSLs, this one is indentation based, too. It declares the type `User` with two member and a uniqueness constraint. Each member is defined by its name followed by its type. Unlike Haskell where an optional type is defined by `Maybe a`, the persistent DSL requires `Maybe` to be at the end of the declaration. A unique constraint is defined with the prefix `Unique` to the type's name as well as the names of one or more members of the type. From this definition several types are generated. First and foremost a record datatype will be defined representing the actual type. This datatype is made instance of several type-classes to make them compatible with the persistent interface. Additionally a data constructor is available to represent a unique instance of the data in the database. There are also several datatype for filtering the data table by specific constraints. Some example outcomes follow:
+This is a simple example of representation of a user in the database. Just like most DSLs, this one is indentation based, too. It declares the type `User` with four member and a uniqueness constraint. Each member is defined by its name followed by its type. Unlike Haskell where an optional type is defined by `Maybe a`, the persistent DSL requires `Maybe` to be at the end of the declaration. A unique constraint is defined with the prefix `Unique` to the type's name as well as the names of one or more members of the type. A full description of the persistent DSL syntax can be found in the wiki of the `persistent`-repository on GitHub[^yesod_persistent_wiki].
+
+[^yesod_persistent_wiki]: https://github.com/yesodweb/persistent/wiki/Persistent-entity-syntax
+
+From this definition several types are generated. First and foremost a record datatype will be defined representing the actual type. This datatype is made instance of several type-classes to make them compatible with the persistent interface. Additionally a data constructor is available to represent a unique instance of the data in the database. There are also several datatype for filtering the data table by specific constraints. Custom type, such as `Gender` must be an instance of the type-class `PersistField` which takes care of serialization and deserialization of the custom datatype. An example outcome follows:
 
 ```haskell
-data User = User { ident :: Text, password :: Maybe Text }
+data User = User { userIdent :: Text
+                 , userPassword :: Maybe Text
+                 , userName :: Text
+                 , userGender :: Gender }
 
-data UniqueUser User
+-- datatype representing the primary key of the table
+-- will be serialized to the actual database type value
+data UserId = KeyBackend SqlBackend User
+```
+
+To actually communicate with the database these custom datatypes are made instance of the type-classes `PersistStore`, `PersistUnique` and `PersistQuery`. All three type-classes offer usefull functions to query and store all related data in the database. The following listing shows some possible usages:
+
+```haskell
+import qualified Data.Text as T
+-- runDB handles all database transactions
+communicateWithDB = runDB $ do
+    let ident = T.pack "haskell@example.org"
+        name = T.pack "Haskell Curry"
+        gender = Male
+        user = User ident Nothing name gender
+    -- inserting the user entity
+    -- but could cause an error
+    -- if the user is already in the database
+    userId <- insert user
+    -- because of uniqueness constrain
+    -- insertUnique is better suited
+    mUserId <- insertUnique user
+    case mUserId of
+        Just userId -> print userId
+        Nothing     -> error "user already in db"
+    -- setting the password of the user
+    let passwd = Just $ T.pack "someSecretPassPhrase"
+    update userId [ UserPassword =. passwd ]
+    -- get unique user entity
+    mUser <- getBy $ UniqueUser ident
+    case mUser of
+        Just user -> print user
+        Nothing   -> error "No user found"
+    -- counts all users by a certain filter
+    numberOfMales <- count [ UserGender ==. Male ]
+    -- fetches 10 users by a certain filter
+    femaleUsers <- selectList
+                    [ UserGender ==. Female ]
+                    [ Asc UserName
+                    , LimitTo 10,
+                    , OffsetBy 0 ]
+    -- deleting a complete table
+    deleteWhere ([] :: [Filter User])
 ```
 
 [@snoyman_developing_2012]
