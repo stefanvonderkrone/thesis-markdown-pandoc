@@ -64,7 +64,7 @@ let fibs = 0 : 1 : [ a + b | (a, b) <- zip fibs (tail fibs)]
 Here, we have the declaration of an infinite list, but which will be evaluated only up until its seventh position. These non-strict semantics in Haskell are implemented as _lazy evaluation_ which leeds to the expression from above also being evaluated by need. So until it is really needed, `fibs` is only a thunked[^thunk] expression. But this strategy can lead to high memory usage especially for complex algorithms, so in some cases it is advised to use strict evaluation which can be used with the `seq` function in Haskell's `Prelude` module. Other modules with strict evaluations for example are `Data.Map.Strict` or `Data.List` the latter having a strict implementation of the `Prelude`'s `foldl` function. Especially this function can lead to a stack overflow with a large list.[^foldl]
 
 [^thunk]: a value that is yet to be evaluated
-[^foldl]: https://www.haskell.org/haskellwiki/Foldr_Foldl_Foldl%27
+[^foldl]: see https://www.haskell.org/haskellwiki/Foldr_Foldl_Foldl%27
 
 ### Type System, Type Inference
 
@@ -306,17 +306,18 @@ data User = User { userIdent :: Text
                  , userPassword :: Maybe Text
                  , userName :: Text
                  , userGender :: Gender }
+            deriving (Show)
 
 -- datatype representing the primary key of the table
 -- will be serialized to the actual database type value
 data UserId = KeyBackend SqlBackend User
 ```
 
-To actually communicate with the database these custom datatypes are made instance of the type-classes `PersistStore`, `PersistUnique` and `PersistQuery`. All three type-classes offer usefull functions to query and store all related data in the database. The following listing shows some possible usages:
+To actually communicate with the database the type-classes `PersistStore`, `PersistUnique` and `PersistQuery` are used. All three offer usefull functions to query and store all related data in the database. The following listing shows some possible usages:
 
 ```haskell
 import qualified Data.Text as T
--- runDB handles all database transactions
+
 communicateWithDB = runDB $ do
     let ident = T.pack "haskell@example.org"
         name = T.pack "Haskell Curry"
@@ -346,11 +347,13 @@ communicateWithDB = runDB $ do
     femaleUsers <- selectList
                     [ UserGender ==. Female ]
                     [ Asc UserName
-                    , LimitTo 10,
+                    , LimitTo 10
                     , OffsetBy 0 ]
     -- deleting a complete table
     deleteWhere ([] :: [Filter User])
 ```
+
+The `runDB` function wraps all actions within a transaction. Actually, each call of `insert` or `selectList` can be called on its own with `runDB`. But to make the code more efficient, it is useful to put all steps into one call to `runDB`. Another advantage is that an error rolls back the full transaction.
 
 [@snoyman_developing_2012]
 <!-- add latest (online) version of book as reference -->
