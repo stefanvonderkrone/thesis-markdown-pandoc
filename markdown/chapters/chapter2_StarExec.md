@@ -26,6 +26,8 @@ A job is a complex task with a set of solver and benchmarks, where each solver p
 
 So, when a job is started, each solver will be started as well with a benchmark as input. The StarExec infrastructure itself takes care that all available CPUs are busy. Of course, not all job-pairs are started at the same time. If a solver finished its task a post-processor is working on the solver's output to extract the actual result (YES, NO, MAYBE). All information will then be stored in the MySQL database.
 
+Hierarchically, StarExec is structured into communities which use spaces for further subdivision. Currently, there are several communities like "Termination" or "SMT". Each community consists of several spaces, some being owned by a user, some being public. Each space can also have subspaces. A space consists of a bunch of jobs, solvers an benchmarks. The job-results and job-pairs can be accessed through the particular job. solvers and benchmarks can be used in other spaces by copying or linking them.
+
 <!-- 
 * job
 * solver
@@ -36,8 +38,20 @@ So, when a job is started, each solver will be started as well with a benchmark 
 
 ## Interfaces
 
+StarExec has an extensive interface to communicate with. It provides a complex user interface via the browser as well as a RESTlike.
+
 ### GUI
 
+The browser based web interface of StarExec is characterized by the hierarchical nature of the spaces. A user has to have access to a space to start a job as well as upload a solver or benchmark. Each space has an overview of its job, solvers, benchmarks, its subspaces and even the enlisted users. All entities listed in this overview are owned by the particular space, so the entities of a subspace can only be seen by navigating to the certain space.
+
+As addressed before solvers and benchmarks can be copied or linked from other spaces but also be uploaded into the space. The available actions may alter according to how much access a user may have regarding a certain space. Some space may even be hidden from the user. Aside from starting jobs and other actions mentioned before, it is also possible to download certain information such as all jobs and benchmarks or a XML based representation of the space itself.
+
+The web interface relies heavily on AJAX-request[^ajax] to prevent each page from being reloaded on each action. So, when the user is navigating the tree of spaces, there is no actual reload of the whole page but an asynchronous fetching and updating of the page's content. This behavior is also applied to the handling of a job's progress. So, until a job is finished the web page automatically keeps track of the progress by regularly sending AJAX-requests to StarExec.
+
+[^ajax]: Asynchronous JavaScript And XML, a technique to dynamically load data remotely and update the content
+
 ### API
+
+
 
 <!-- starexeccommand -->

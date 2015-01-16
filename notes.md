@@ -38,3 +38,16 @@
 * Chapter Evaluation -> Future Considerations:
     - wishes for StarExec (precise)
     - not so StarExec (?)
+
+## sources
+
+* "Proving Termination of Programs Automatically with AProVE"
+    - http://verify.rwth-aachen.de/giesl/papers/IJCAR14-AProVE.pdf
+* StarExec dev wiki: https://wiki.uiowa.edu/display/stardev/Project+Overview
+* "Introducing StarExec: a Cross-Community Infrastructure for Logic Solving" 
+    - http://ceur-ws.org/Vol-873/papers/inv_1.pdf
+* "StarExec: A Cross-Community Infrastructure for Logic Solving"
+    - http://www.springerprofessional.de/028---starexec253a-a-cross-community-infrastructure-for-logic-solving/5193964.html
+    - http://link.springer.com/chapter/10.1007%2F978-3-319-08587-6_28
+* REST best practices
+    - http://www.sitepoint.com/best-practices-rest-api-scratch-introduction/
