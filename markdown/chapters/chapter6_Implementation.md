@@ -356,4 +356,4 @@ communicateWithDB = runDB $ do
 The `runDB` function wraps all actions within a transaction. Actually, each call of `insert` or `selectList` can be called on its own with `runDB`. But to make the code more efficient, it is useful to put all steps into one call to `runDB`. Another advantage is that an error rolls back the full transaction.
 
 [@snoyman_developing_2012]
-<!-- add latest (online) version of book as reference -->
+<!-- TODO: add latest (online) version of book as reference -->

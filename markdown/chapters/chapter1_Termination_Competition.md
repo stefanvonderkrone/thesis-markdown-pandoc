@@ -4,22 +4,53 @@ In this chapter I will discuss the terms of Termination and Termination of Term 
 
 ## Termination of Term Rewriting
 
-<!-- 
-* example of a term rewriting system (maybe from TPDB itself)
-* alternative to turing machines
-* termination means, every term rewriting system has base case
-    * possible example: pattern matching recursion in Haskell
- -->
+The motivation of this topic is to proof wether a term rewriting system (TRS) is terminating. Termination in terms of computer science means that a programm, e.g. a function, ends with a base condition. If this is the case then the program terminates. A base condition for example is the end of a list or counting down an integer and then reaching zero. A good example is the `replicate` function which takes an integer and an arbitrary argument which is to be replicated in a list. The integer defines the amount of occurrences of that argument in the resulting list. As this thesis also covers it the following code listing is written in Haskell:
 
-[@zantema_termination_2000]
+```haskell
+-- takes an Int and an a, returns a list of type a
+replicate :: Int -> a -> [a]
+-- the base condition, returns empty list if Int is zero
+replicate 0 x = []
+-- recursive call by decrementing n
+replicate n x = x : replicate (n-1) x
+```
+
+Assuming, that we have a strict type system – which is the case with Haskell – and the first argument is a positive integer, then `replicate` always terminates. But, if the first argument is a negative integer, then this function will never ever terminate, because the base condition will never be fulfilled. So, this implementation of the `replicate` function is a good example of both, a terminating as well as a non-termination program. That's why the actual implementation in Haskell's base library is better.[^replicate]
+
+[^replicate]: see http://hackage.haskell.org/package/base-4.7.0.2/docs/src/GHC-List.html#replicate
+
+A TRS itself is a set of rules each being a pair of terms $l\:\xrightarrow\:r$ where the left term can be replaced by the right term, but not vice versa. A TRS is an alternative computational model to a Turing machine. A TRS terminates if there is no rule left to be applied. In the example from above, there are to rules, that is two implementations of that function. If the first argument is zero, the call to this function will be replaced by an empty list. If this argument isn't zero, the second rule will be applied. Then, the call to this function will be replaced by the second argument being appended to the result of another call to `replicate`, this time with `n` being decremented.
+
+So, the question is, how can the termination of a TRS be proven? According to [@zantema_termination_2000], there are _semantical_, _synthactical_ and _transformational_ methods for a proof.
+
+_"Proving termination by a semantical method means that a weight function has to be defined in such a way that by every reduction step the weight of a term strictly decreases. If the weight is a natural number, or more generally, a value in a set equipped with a well-founded order, then this cannot go on forever so termination is ensured."_
+
+To give an example for a semantical method, a TRS with the following set of rules is given:
+
+$$
+R=\begin{cases}
+f(f(x))\:\xrightarrow\:g(x)\\
+g(g(x))\:\xrightarrow\:f(x)
+\end{cases}
+$$
+
+Now, well-formed weight functions must be chosen or interpreted from the set of rules. So, define these functions in terms of the non-empty set of A: $f_{A}(x)=g_{A}(x)=x+1$ for all $x \in A$. These weight function can now be applied to the rules:
+
+$$
+f_{A}(f_{A}(x))=x+2 > x+1=g_{A}(x) \text{ and } g_{A}(g_{A}(x))=x+2 > x+1=g_{A}(x)
+$$
+
+So the termination of this TRS has been proven, because the application of the weight functions lead to a decrementation of weight of each term. This is just one example of a terminating TRS proven by sementical methods. The other two methods are more complex and explained as follows:
+
+_"Syntactical methods are based upon orders on terms that are defined by induction on the structure of the terms. Given such an order, if it can be proved that it is well-founded, and if every reduction step causes a decrease with respect to the order, then termination has been proved. (...) Transformational methods provide non-termination preserving transformations between rewrite systems: a transformation $\Phi$ falls in this category if termination of a TRS $(\Sigma,R)$ follows from termination of $\Phi(\Sigma,R)$. If such a $\Phi$ can be found in such a way that termination of $\Phi(\Sigma,R)$ can be proved by any other method, then termination of $(\Sigma,R)$ has been proven."_ [@zantema_termination_2000]
 
 ## Termination Community
 
-<!-- 
-* Workshops
-* termination-portal.org
-* Termtool mailing list
- -->
+The Termination Community is an international group of developers and researchers working in the field of Termination of Term Rewriting. Their main hub of information is the website `http://www.termination-portal.org/`, a wiki containing all sorts of information about this community. They organize workshops where they try to meet up with other researchers interested in all facets of termination. They also have a mailing list[^termtools] where they discuss all sorts of topics regarding termination. Some well known people of the Termination Community are Prof. Dr. Hans Zantema as well as my advisors Prof. Dr. Johannes Waldmann and Dr. René Thiemann. Noteworthy educational institutes contributing to this community are the RWTH Aachen University, the Computer Research Laboratory at the University of Paris-Sud, the Institute of Computer Science at the University of Innsbruck, the Leipzig University of Applied Sciences and the Eindhoven University of Technology.
+
+[^termtools]: see http://lists.lri.fr/mailman/listinfo/termtools
+
+<!-- TODO: too short? -->
 
 ## Termination Competition
 

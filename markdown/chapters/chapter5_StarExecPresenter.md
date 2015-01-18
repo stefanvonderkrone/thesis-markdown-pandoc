@@ -14,7 +14,7 @@ The first group of data types is used as identifiers for the second group, so th
 
 To complete the example from above the type `JobID` has three different appearences, first being `StarExecJobID` representing a job on StarExec, the second being `LriJobID` representing an imported job from the 2007 Termination Competition and the third being `UibkJobID` for the imported jobs from Innsbruck. Additionally, a `Job` also has three different appearances (`StarExecJob`, `LriJob`, `UibkJob`) as well as `JobResult` (`StarExecResult`, `LriResult`, `UibkResult`).
 
-<!-- Insert figure to illustrate the dependencies -->
+<!-- TODO: Insert figure to illustrate the dependencies -->
 
 The reason to have three different kinds of appearances for each type is because of having the data from StarExec in combination with the imported data from previous competitions. This old data differs in its form from that of the 2014 Termination Competition, so to consider these differences in a safe way I decided to isolate them persistent-wise. So, for each kind of data there are three database tables used to store that data.
 
@@ -45,7 +45,7 @@ Fast responses, especially for handlers that can return a huge bunch of data, is
 
 This is achieved by starting a new thread within the Star-Exec-Presenter application. The following figure shows the process from a request to a response:
 
-<!-- Insert figure to illustrate communication with StarExec including the caching mechanism -->
+<!-- TODO: Insert figure to illustrate communication with StarExec including the caching mechanism -->
 
 This database based caching mechanism has its downside when it comes the the competition results, as they are calculated based on the results of the related jobs. And as the data of these jobs is stored in the database, there is no need for the results to be stored either. So the results have to be cached in another way which is within the application's memory. For this purpose Star-Exec-Presenter uses STM[^stm].
 
@@ -57,7 +57,7 @@ STM helps in this case because it can prevent deadlocks from multiple simultaneo
 
 [^fifo]: First In First Out
 
-<!-- Insert figure to illustrate the cache of competition results -->
+<!-- TODO: Insert figure to illustrate the cache of competition results -->
 
 Star-Exec-Presenter itself only does the reading and writing process within STM. The calculation of the competition results is done outside of STM. Only in this way we can ensure that the transactions are very small – or _atomic_.
 

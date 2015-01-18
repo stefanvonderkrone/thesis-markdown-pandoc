@@ -16,7 +16,7 @@ The data-model has three major entities: the jobs, the solvers and the benchmark
 
 A job is a complex task with a set of solver and benchmarks, where each solver processes each benchmark. Each relation between a certain solver and benchmark is called job-pair. Each job-pair consists of the solver's log (stdout and stderr). The job-pair is directly connected to the result info, which contains the solver's result and additional info such as cpu- and wallclock-time, the configuration and identifying information of the certain solver and benchmark.
 
-<!-- a figure could illustrate the relation between jobs, solver and benchmarks -->
+<!-- TODO: a figure could illustrate the relation between jobs, solver and benchmarks -->
 
 So, when a job is started, each solver will be started as well with a benchmark as input. The StarExec infrastructure itself takes care that all available CPUs are busy. Of course, not all job-pairs are started at the same time. If a solver finished its task a post-processor is working on the solver's output to extract the actual result (YES, NO, MAYBE). All information will then be stored in the MySQL database.
 
