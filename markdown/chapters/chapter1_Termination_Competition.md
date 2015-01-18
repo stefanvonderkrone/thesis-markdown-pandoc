@@ -54,12 +54,15 @@ The Termination Community is an international group of developers and researcher
 
 ## Termination Competition
 
-<!-- 
-* since 2005
-* Paris + Innsbruck
-* steering commite
-* important Persons: Marché, Thiemann, Waldmann
- -->
+The Termination Competition is an event held every year since 2005. The idea of comparing tools for proving term rewriting was braught up by Albert Rubio in 2003. [@marche_termination_2007] Until 2007 the competition was organized by the Computer Research Laboratory at the University of Paris-Sud. From 2008 until 2013 the organization was in control of the Institute of Computer Science at the University of Innsbruck. In 2014 Prof. Dr. Johannes Waldmann was in charge of the Termination Competition.
+
+The competition is an event where several programs compete against each other solving problems regarding the Termination of Term Rewriting. There are many different categories with varying requirements. [^categories] But only those categories represented by enough tools take part at the official competition run. There are two types of scoring by which each tool is evaluated. The first one considers the number of results being YES, the second is the sum of an additional complexity degree appended to YES. So, only if a tool outputs the result YES regarding a certain problem it is rewarded with a score. Another score relates to meta-categories, groups of categories, where solver are classified in an overall ranking. This score is calculated by the position in each category. The resulting score for each tool is the sum of points rewarded in each category. These points are result of the number of all participants substracted by the rank of the tool in the particular category.
+
+[^categories]: see http://www.termination-portal.org/wiki/Category:Categories
+
+The Termination Competition is controlled by the steering committee, a group of researchers representing all research groups. This committee influences the design and the process of each competition. The group is responsible for the categories, the scoring as well as the problem database. All rules by which the committe operates are listed in the Termination Competition Steering Committee Bylaws. [^bylaws] By the time of writing of this thesis the committee is staffed by Jürgen Giesl, Frederic Mesnard, Albert Rubio, René Thiemann and Johannes Waldmann.
+
+[^bylaws]: see http://www.termination-portal.org/wiki/Termination_Competition_Steering_Committee_Bylaws
 
 [@marche_termination_2007]
 
