@@ -22,10 +22,10 @@ The Star-Exec-Presenter is a tool that ran during the 2014 Termination Competiti
 
 Some solver explicitly log an HTML- or XML-proof with each run in its output. This proof should be detected as well as extracted from the output. Also the respective XSL-File for the XML output should be used to display the proof in the browser.
 
-## Compare Results, Querriyng
+## Compare Results, Querying
 
 Simply displaying the results and outputs of each solver-run is not enough. It is more important to compare the results between several solver. Are there differences between their results on specific benchmarks? Also, a list of jobs should be displayable at once. A historical comparison is the most important aspect of this use case, as the developers of a solver would want to track the evolution of their tool.
 
-As important comparing the result is as overwhelming is their amount, so a beneficial use case is querriyng the results according to specific filters. Such filters can eliminate unimportant results from the representation. For instance a benchmark is uninteresting if all solvers have the same result, so all those benchmarks can be filtered out.
+As important comparing the result is as overwhelming is their amount, so a beneficial use case is queriyng the results according to specific filters. Such filters can eliminate unimportant results from the representation. For instance a benchmark is uninteresting if all solvers have the same result, so all those benchmarks can be filtered out.
 
-The user should be able to concentrate on data which meets his or her interests. This data could tell which benchmark causes incorrect results with the own solver. Also it can illustrate changes in the solvers results in comparison to past runs, fo instance a once solved benchmark could now be unsolvable. This is the data we want to querry in terms of data mining.
+The user should be able to concentrate on data which meets his or her interests. This data could tell which benchmark causes incorrect results with the own solver. Also it can illustrate changes in the solvers results in comparison to past runs, fo instance a once solved benchmark could now be unsolvable. This is the data we want to query in terms of data mining.

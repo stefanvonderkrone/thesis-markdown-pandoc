@@ -99,7 +99,16 @@ REST utilizes the available web technology for this purpose and isn't based on a
 
 A suitable presentation is HTML as well as XML or JSON. Star-Exec-Presenter currently only sends HTML. But this behavior could be altered by using a special header in the HTTP request. So, to get the data as XML or JSON, the Accept-Header could be set to the values `Accept: text/xml` or `Accept: text/json`. The web application then can evaluate this header to respond either with an XML or with a JSON presentation. [@richardson_restful_2007]
 
-It is widely accepted not to use verbs as parts of the URL rather than plural nouns. For instance the route `/get_job_results/#JobID` could be better written as `/job_results/#JobID` or simply `/results/#JobID`. Also, it is recommended to have a generalized route, e.g. `/jobs`, which lists all resources, whereas a parameter added to the URL results in returning only the specified resource. In the case of Star-Exec-Presenter especially the Results-Route is a special case takes an arbitrary amount of `JobID`s.
+It is widely accepted not to use verbs as parts of the URL rather than plural nouns. For instance the route `/get_job_results/#JobID` could be better written as `/job_results/#JobID` or simply `/results/#JobID`. Also, it is recommended to have a generalized route, e.g. `/jobs`, which lists all resources, whereas a parameter added to the URL results in returning only the specified resource. In the case of Star-Exec-Presenter especially the Results-Route is a special case takes an arbitrary amount of `JobID`s.[^rest_best_practices]
+
+[^rest_best_practices]: e.g., see http://www.sitepoint.com/best-practices-rest-api-scratch-introduction/
 
 ## Querying
 
+Just presenting the results in a table of up to over 5000 rows is not very effective and can be a bit tedious, if the goal is to collect specific information. These kind of information can be in general the differences between each attending solver. The benchmarks that are completely – that is by all solvers – resolved to YES aren't interesting but the remaining ones. So, the most interesting benchmarks can be the ones, where one solver outputs YES while another one returns NO. For the developers this can indicate a bug or a lack of features.
+
+Another interesting case of application is the historical comparison. So, if previous runs of one solver with the same set of benchmarks are available, then differing results imply some kind of evolution to the solver. Of course, that evolution can be positive and negative as well.
+
+The details of this querying are defined by the module `Presenter.Model.Query`. A query is defined by a list of transformations. A tranformation can affect certain columns and rows. Columns are selected by their position within the table. Rows aren't directly selected but filtered by certain conditions. These conditions can include but also exclude specific rows. Each filter contains a list related to the list of solvers. For example, if the listing of results contains four solvers, then the filter contains for items. Currently, these items only enable a textbased comparison but no disjunction.
+
+By the time of writing of this thesis this definition is not finished and can only be considered as a draft. Another proposal is defined in the aforementioned module, too. This definition tries to be more generic in respect to the `SolverResult`. It also includes disjunction to the row-filter.

@@ -15,6 +15,8 @@ module.exports = {
             // "markdown/summary.md",
             //"markdown/acknowledgements.md",
             "markdown/toc.md",
+            "markdown/preface.md",
+            "markdown/abstract.md",
             "markdown/introduction/intro1.md",
             "markdown/introduction/intro2.md",
             "markdown/chapters/chapter1_Termination_Competition.md",

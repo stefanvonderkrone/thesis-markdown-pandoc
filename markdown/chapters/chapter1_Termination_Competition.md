@@ -1,10 +1,12 @@
+\mainmatter
+
 # Termination Competition
 
 In this chapter I will discuss the terms of Termination and Termination of Term Rewriting. I also will describe the Termination Competition, as its 2014 incarnation was one of the goals towards the Star-Exec-Presenter was developed.
 
 ## Termination of Term Rewriting
 
-The motivation of this topic is to proof wether a term rewriting system (TRS) is terminating. Termination in terms of computer science means that a programm, e.g. a function, ends with a base condition. If this is the case then the program terminates. A base condition for example is the end of a list or counting down an integer and then reaching zero. A good example is the `replicate` function which takes an integer and an arbitrary argument which is to be replicated in a list. The integer defines the amount of occurrences of that argument in the resulting list. As this thesis also covers it the following code listing is written in Haskell:
+The motivation of this topic is to proof wether a term rewriting system (TRS) is terminating. Termination in terms of computer science means that a programm, e.g. a function, ends with a base condition. If this is the case then the program terminates. A base condition for example is the end of a list or counting down an integer and then reaching zero. A good example is the `replicate` function which takes an integer and an arbitrary argument which will be replicated into a list. The integer defines the amount of occurrences of that second argument in the resulting list. As this thesis also this programming language the following code listing is written in Haskell:
 
 ```haskell
 -- takes an Int and an a, returns a list of type a
@@ -40,7 +42,7 @@ $$
 f_{A}(f_{A}(x))=x+2 > x+1=g_{A}(x) \text{ and } g_{A}(g_{A}(x))=x+2 > x+1=g_{A}(x)
 $$
 
-So the termination of this TRS has been proven, because the application of the weight functions lead to a decrementation of weight of each term. This is just one example of a terminating TRS proven by sementical methods. The other two methods are more complex and explained as follows:
+So the termination of this TRS has been proven, because the application of the weight functions leads to a decrementation of weight of each term. This example is taken from [@zantema_termination_2000] and it is just one of a terminating TRS proven by sementical methods. The other two methods are more complex and explained as follows:
 
 _"Syntactical methods are based upon orders on terms that are defined by induction on the structure of the terms. Given such an order, if it can be proved that it is well-founded, and if every reduction step causes a decrease with respect to the order, then termination has been proved. (...) Transformational methods provide non-termination preserving transformations between rewrite systems: a transformation $\Phi$ falls in this category if termination of a TRS $(\Sigma,R)$ follows from termination of $\Phi(\Sigma,R)$. If such a $\Phi$ can be found in such a way that termination of $\Phi(\Sigma,R)$ can be proved by any other method, then termination of $(\Sigma,R)$ has been proven."_ [@zantema_termination_2000]
 
@@ -60,10 +62,14 @@ The competition is an event where several programs compete against each other so
 
 [^categories]: see http://www.termination-portal.org/wiki/Category:Categories
 
-The Termination Competition is controlled by the steering committee, a group of researchers representing all research groups. This committee influences the design and the process of each competition. The group is responsible for the categories, the scoring as well as the problem database. All rules by which the committe operates are listed in the Termination Competition Steering Committee Bylaws. [^bylaws] By the time of writing of this thesis the committee is staffed by Jürgen Giesl, Frederic Mesnard, Albert Rubio, René Thiemann and Johannes Waldmann.
+The Termination Competition is controlled by the steering committee, a group of researchers representing all research groups of the Termination Community. This committee influences the design and the process of each competition. It is responsible for the categories, the scoring as well as the problem database. All rules by which the committe operates are listed in the Termination Competition Steering Committee Bylaws.[^bylaws] By the time of writing of this thesis the committee is staffed by Jürgen Giesl, Frederic Mesnard, Albert Rubio, René Thiemann and Johannes Waldmann. Besides the steering committee there is also an organization committee which is responsible for the staging of a competition. The Terminaton Competition 2014 was organized mainly by my advisor Prof. Dr. Waldmann with my assistance by developing the Star-Exec-Presenter.
+
+<!-- TODO: add organization committee and rules -->
 
 [^bylaws]: see http://www.termination-portal.org/wiki/Termination_Competition_Steering_Committee_Bylaws
 
-[@marche_termination_2007]
+## TPDB - Termination Problem Data Base
 
-## TPDB - Termination Problem Database
+The Termination Problem Data Base is a large collection of termination problems and the crucial part of each competition besides the participating tools. They contain challenging examples by various authors in several categories. Since 2009 all problems are described in XML format, until 2008 the problems were described in a special text based format. The version used for the 2014 Termination Competition was 9.0.[^tpdb]
+
+[^tpdb]: see http://www.termination-portal.org/wiki/TPDB
