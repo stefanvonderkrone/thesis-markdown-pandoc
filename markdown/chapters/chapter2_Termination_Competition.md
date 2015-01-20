@@ -62,8 +62,6 @@ The competition is an event where several programs compete against each other so
 
 The Termination Competition is controlled by the steering committee, a group of researchers representing all research groups of the Termination Community. This committee influences the design and the process of each competition. It is responsible for the categories, the scoring as well as the problem database. All rules by which the committe operates are listed in the Termination Competition Steering Committee Bylaws.[^bylaws] By the time of writing of this thesis the committee is staffed by Jürgen Giesl, Frederic Mesnard, Albert Rubio, René Thiemann and Johannes Waldmann. Besides the steering committee there is also an organization committee which is responsible for the staging of a competition. The Terminaton Competition 2014 was organized mainly by my advisor Prof. Dr. Waldmann with my assistance by developing the Star-Exec-Presenter.
 
-<!-- TODO: add organization committee and rules -->
-
 [^bylaws]: see http://www.termination-portal.org/wiki/Termination_Competition_Steering_Committee_Bylaws
 
 ## TPDB - Termination Problem Data Base

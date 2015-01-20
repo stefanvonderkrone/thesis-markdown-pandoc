@@ -4,7 +4,7 @@
 
 This is a guide to the Star-Exec-Presenter, a web-based visualization and data-mining software developed in preparation of this thesis. The Star-Exec-Presenter is intended to be an efficient to use software for members of the termination community of the StarExec service, as well as other communities or users of StarExec. The web application features essential functionalities such as starting competitions, loading results and other data from StarExec or visualizing and filtering such data. Contributers of solvers should be able to track their progress of development of their respective solver through time by comparing the results over time.
 
-Termination is a branch of theoretical computer science where programs such as algorithms are examined, whether they terminate, that is whether they complete. In terms of StarExec, solvers are running over a bunch of problems returning an answer for each problem: Yes, No or Maybe.
+Termination is a branch of theoretical computer science where programs such as algorithms are examined, whether they terminate, that is whether they complete. In terms of StarExec, solvers are running over a bunch of problems returning an answer for each problem: _YES_, _NO_ or _MAYBE_.
 
 The Termination Competition is an annual event of the termination community of StarExec, where solvers from different contributors compete in several categories. In 2014 the competition was organized by my adviser, Prof. Johannes Waldman, and me. Our goal was to do both, starting the competition run as well as to present it via an automatically updated web-interface.
 

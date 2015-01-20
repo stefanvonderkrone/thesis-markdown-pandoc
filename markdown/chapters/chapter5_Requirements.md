@@ -26,4 +26,8 @@ As StarExec is located in Iowa and some requests require expensive fetching from
 
 ## RESTful API
 
+The Termination Community is filled with members living all over the world and they may want to able to send interesting data by e-mail. And as it is not necessary to pack all data into one e-mail, why not simply send a URL? So, another requirement should be to have distinctive URLs which contain all informationen required to display the desired data. Such a URL can point to the results of a job on StarExec and only requires the identifier of that job.
+
 ## Import old data
+
+There is one use case which defines that a user should be able to compare certain job results. These results may not only originate from a job on StarExec but also from previous competitions whose data may not be available on StarExec. So, Star-Exec-Presenter should be able to import as well as to handle such data.
