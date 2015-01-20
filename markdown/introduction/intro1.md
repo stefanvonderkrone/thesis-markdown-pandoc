@@ -1,3 +1,5 @@
+\mainmatter
+
 # Introduction 
 
 This is a guide to the Star-Exec-Presenter, a web-based visualization and data-mining software developed in preparation of this thesis. The Star-Exec-Presenter is intended to be an efficient to use software for members of the termination community of the StarExec service, as well as other communities or users of StarExec. The web application features essential functionalities such as starting competitions, loading results and other data from StarExec or visualizing and filtering such data. Contributers of solvers should be able to track their progress of development of their respective solver through time by comparing the results over time.
