@@ -1,3 +1,5 @@
+\frontmatter
+
 # Abstract
 
 In 2014 the annual Termination Competition was held the eleventh since 2004. It was  organized by members of the Leipzig University of Applied Sciences (HTWK). This thesis gives an overview about the event, the Termination Community as well as an introduction to Termination of Term Rewriting. It discusses StarExec, the technical infrastructure used by the competition. In general this is also an introduction to the Star-Exec-Presenter, a web-based application to present the results of the competition.
