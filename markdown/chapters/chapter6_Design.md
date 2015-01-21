@@ -4,17 +4,17 @@ The Star-Exec-Presenter is actually the concrete work of this thesis. As a REST-
 
 ## Application Structure
 
-Star-Exec-Presenter is written entirely in Haskell by utilizing its module system and the Yesod Web Framework. Detailled information are listed in chapter 7 "Implementation". In this section I will discuss the particular pieces that form Star-Exec-Presenter into a full server-side web application. To better understand the application structure, it could easily be interpreted as a Model-View-Controller (MVC) pattern where the Model stands for the data model, the View is represented by the templates which form the HTML presentation, and the Controller in the form of the several request handlers.
+Star-Exec-Presenter is written entirely in Haskell by utilizing its module system and the Yesod Web Framework. Detailled information are listed in chapter _7. Implementation_. In this section I will discuss the particular pieces that form Star-Exec-Presenter into a full server-side web application. To better understand the application structure, it could easily be interpreted as a Model-View-Controller (MVC) pattern where the Model stands for the data model, the View is represented by the templates which form the HTML presentation, and the Controller in the form of the several request handlers.
 
 ### Data Model
 
 The data model can be devided into two groups, the first containing the data types used for the REST-API which I will discuss later, and the second being the persistent data types of the actual data like the job results.
 
-The first group of data types is used as identifiers for the second group, so they are directly related to each other. For instance there is `JobID` type that relates to  `Job` type that containes the infos about a job as well as to a list of `JobResult` containing the actual results of the particular job. All these types mostly are unified types for the different entities of StarExec as well as imported entities.
+The first group of data types is used as identifiers for the second group, so they are directly related to each other. For instance there is a `JobID` type that relates to  `Job` type that containes the infos about a job as well as to a list of `JobResult`s containing the actual results of the particular job. All these types mostly are unified types for the different entities of StarExec as well as imported entities.
 
-To complete the example from above the type `JobID` has three different appearences, first being `StarExecJobID` representing a job on StarExec, the second being `LriJobID` representing an imported job from the 2007 Termination Competition and the third being `UibkJobID` for the imported jobs from Innsbruck. Additionally, a `Job` also has three different appearances (`StarExecJob`, `LriJob`, `UibkJob`) as well as `JobResult` (`StarExecResult`, `LriResult`, `UibkResult`).
+To complete the example from above the type `JobID` has three different appearences, first being `StarExecJobID` representing a job on StarExec, the second being `LriJobID` representing an imported job from the 2007 Termination Competition and the third being `UibkJobID` for the imported jobs from Innsbruck. Additionally, a `Job` also has three different appearances (`StarExecJob`, `LriJob`, `UibkJob`) as well as `JobResult` (`StarExecResult`, `LriResult`, `UibkResult`). The Figure 6.1 illustrates these dependencies.
 
-<!-- TODO: Insert figure to illustrate the dependencies -->
+![dependencies of essential entities](figures/Entities-Dependencies2.pdf)
 
 The reason to have three different kinds of appearances for each type is because of having the data from StarExec in combination with the imported data from previous competitions. This old data differs in its form from that of the 2014 Termination Competition, so to consider these differences in a safe way I decided to isolate them persistent-wise. So, for each kind of data there are three database tables used to store that data.
 
@@ -33,7 +33,7 @@ All templates can be found in the `templates` folder, some are located within th
 
 ### Request Handlers
 
-The controller part of Star-Exec-Presenter is represented by the several request handlers. Each handler responds to a certain URL[^url] requested by a client application. For instance there are handlers that only return the information of a particular entity like a solver or a job, there are also handler that initiate specific requests to StarExec or display the results of a competition. The request handlers are generally managing the logic behind Star-Exec-Presenter.
+The controller part of Star-Exec-Presenter is represented by the several request handlers. Each handler responds to a certain URL[^url] requested by a client application. For instance there are handlers that only return the information of a particular entity like a solver or a job, there are also handlers that initiate specific requests to StarExec or display the results of a competition. The request handlers are generally managing the logic behind Star-Exec-Presenter.
 
 [^url]: Uniform Resource Locator
 
@@ -45,19 +45,17 @@ Fast responses, especially for handlers that can return a huge bunch of data, is
 
 This is achieved by starting a new thread within the Star-Exec-Presenter application. The following figure shows the process from a request to a response:
 
-<!-- TODO: Insert figure to illustrate communication with StarExec including the caching mechanism -->
+![the caching mechanism](figures/Caching-Mechanism2.pdf)
 
 This database based caching mechanism has its downside when it comes the the competition results, as they are calculated based on the results of the related jobs. And as the data of these jobs is stored in the database, there is no need for the results to be stored either. So the results have to be cached in another way which is within the application's memory. For this purpose Star-Exec-Presenter uses STM[^stm].
 
 [^stm]: Software Transactional Memory, a mechanism for concurrent programming with shared resources
 
-The reason to cache the competition results is because it takes too long to fetch the related job results from the database and do the calculations, as a usual competition has a huge amount of data to process. For instance the 2014 Termination Competition has three meta categories with a total of 19 jobs that produced an overall amount of 37.880 job-pairs. That doesn't seem to be that much but one requirement was to have short response times. So we decided to offload the computation to a separate worker thread. The results are saved within the application's memory and are accessed via STM. The calculating worker thread is the only instance which writes in this cache, all request handlers can only read from it.
+The reason to cache the competition results is that it takes too long to fetch the related job results from the database and do the calculations, as a usual competition has a huge amount of data to process. For instance the 2014 Termination Competition has three meta categories with a total of 19 jobs that produced an overall amount of 37.880 job-pairs. That doesn't seem to be that much but one requirement was to have short response times. So we decided to offload the computation to a separate worker thread. The results are saved within the application's memory and are accessed via STM. The calculating worker thread is the only instance which writes in this cache, all request handlers can only read from it.
 
-STM helps in this case because it can prevent deadlocks from multiple simultaneous access to the shared memory making the whole application more reliable. To achieve this goal every access to the shared memory (our cache of competition results) is being managed by transactions, much like transactions of a database. If two or more transactions try to access a resource simultaneously, all but one will be aborted. A mechanism to retry a rolled back transaction ensures that they will be finished anyhow. To achieve this behavior each transaction must be very small. The actual terminology is _atomic_. It is wise to have very small transactions because STM is not _fair_ as it favors small and fast transactions over large and slow ones. STM doesn't work in FIFO[^fifo] order. [@marlow_parallel_2013]
+STM helps in this case because it can prevent deadlocks from multiple simultaneous accesses to the shared memory making the whole application more reliable. To achieve this goal every access to the shared memory (our cache of competition results) is being managed by transactions, much like transactions of a database. If two or more transactions try to access a resource simultaneously, all but one will be aborted. A mechanism to retry a rolled back transaction ensures that they will be finished anyhow. To achieve this behavior each transaction must be very small. The actual terminology is _atomic_. It is wise to have very small transactions because STM is not _fair_ as it favors small and fast transactions over large and slow ones. STM doesn't work in FIFO[^fifo] order. [@marlow_parallel_2013]
 
 [^fifo]: First In First Out
-
-<!-- TODO: Insert figure to illustrate the cache of competition results -->
 
 Star-Exec-Presenter itself only does the reading and writing process within STM. The calculation of the competition results is done outside of STM. Only in this way we can ensure that the transactions are very small – or _atomic_.
 
@@ -99,16 +97,18 @@ REST utilizes the available web technology for this purpose and isn't based on a
 
 A suitable presentation is HTML as well as XML or JSON. Star-Exec-Presenter currently only sends HTML. But this behavior could be altered by using a special header in the HTTP request. So, to get the data as XML or JSON, the Accept-Header could be set to the values `Accept: text/xml` or `Accept: text/json`. The web application then can evaluate this header to respond either with an XML or with a JSON presentation. [@richardson_restful_2007]
 
-It is widely accepted not to use verbs as parts of the URL rather than plural nouns. For instance the route `/get_job_results/#JobID` could be better written as `/job_results/#JobID` or simply `/results/#JobID`. Also, it is recommended to have a generalized route, e.g. `/jobs`, which lists all resources, whereas a parameter added to the URL results in returning only the specified resource. In the case of Star-Exec-Presenter especially the Results-Route is a special case takes an arbitrary amount of `JobID`s.[^rest_best_practices]
+It is widely accepted not to use verbs as parts of the URL rather than plural nouns. For instance the route `/get_job_results/#JobID` could be better written as `/job_results/#JobID` or simply `/results/#JobID`. Also, it is recommended to have a generalized route, e.g. `/jobs`, which lists all resources, whereas a parameter added to the URL results in returning only the specified resource. In the case of Star-Exec-Presenter especially the Results-Route is a special case that takes an arbitrary amount of `JobID`s.[^rest_best_practices]
 
-[^rest_best_practices]: e.g., see http://www.sitepoint.com/best-practices-rest-api-scratch-introduction/
+[^rest_best_practices]: e.g., see [http://www.sitepoint.com/best-practices-rest-api-scratch-introduction/](http://www.sitepoint.com/best-practices-rest-api-scratch-introduction/)
 
 ## Querying
 
-Just presenting the results in a table of up to over 5000 rows is not very effective and can be a bit tedious, if the goal is to collect specific information. These kind of information can be in general the differences between each attending solver. The benchmarks that are completely – that is by all solvers – resolved to YES aren't interesting but the remaining ones. So, the most interesting benchmarks can be the ones, where one solver outputs YES while another one returns NO. For the developers this can indicate a bug or a lack of features.
+Just presenting the results in a table of up to over 5000 rows is not very effective and can be a bit tedious, if the goal is to collect specific information. These kind of information can be in general the differences between each attending solver. The benchmarks that are completely – i.e. by all solvers – resolved to YES aren't interesting but the remaining ones. So, the most interesting benchmarks can be the ones, where one solver outputs YES while another one returns NO. For the developers this can indicate a bug or a lack of features.
 
 Another interesting case of application is the historical comparison. So, if previous runs of one solver with the same set of benchmarks are available, then differing results imply some kind of evolution to the solver. Of course, that evolution can be positive and negative as well.
 
-The details of this querying are defined by the module `Presenter.Model.Query`. A query is defined by a list of transformations. A tranformation can affect certain columns and rows. Columns are selected by their position within the table. Rows aren't directly selected but filtered by certain conditions. These conditions can include but also exclude specific rows. Each filter contains a list related to the list of solvers. For example, if the listing of results contains four solvers, then the filter contains for items. Currently, these items only enable a textbased comparison but no disjunction.
+The details of this querying are defined by the module `Presenter.Model.Query`. A query is defined by a list of transformations. A tranformation can affect certain columns and rows. Columns are selected by their position within the table. Rows aren't directly selected but filtered by certain conditions. These conditions can include but also exclude specific rows. Each filter contains a list related to the list of solvers. For example, if the listing of results contains four solvers, then the filter contains for items. Currently, these items only enable a textbased comparison but no disjunction. Figure 6.3 shows a screenshot of the current implementation of the query interface.
+
+![screenshot of the experimental query interface](figures/Queries.png)
 
 By the time of writing of this thesis this definition is not finished and can only be considered as a draft. Another proposal is defined in the aforementioned module, too. This definition tries to be more generic in respect to the `SolverResult`. It also includes disjunction to the row-filter.

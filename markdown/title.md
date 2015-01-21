@@ -7,7 +7,7 @@
        
         \vspace*{1cm}
         
-       \large{ \textbf{A Haskell Web-Application for Data-Mining Competition-Results from StarExec}}
+       \large{ \textbf{A Haskell Web Application for Data Mining Competition Results from StarExec}}
         
         \vspace{0.5cm}
         
@@ -32,8 +32,7 @@
         citizen of Germany
         
          \vspace{2cm}
-         accepted on the recommendation of
-        Prof. Dr. Johannes Waldmann
+         thesis advisor: Prof. Dr. Johannes Waldmann
        
 
         
