@@ -19,7 +19,7 @@ module.exports = {
             "markdown/abstract.md",
             "markdown/introduction/intro1.md",
             "markdown/introduction/intro2.md",
-            "markdown/chapters/chapter2_Termination_Competition.md",
+            "markdown/chapters/chapter2_Termination_Community.md",
             "markdown/chapters/chapter3_StarExec.md",
             "markdown/chapters/chapter4_Use_Cases.md",
             "markdown/chapters/chapter5_Requirements.md",
