@@ -1,6 +1,6 @@
 # Evaluation
 
-...
+In this chapter I want to evaluate the previously set goals. How did Star-Exec-Presenter perform during the Termination Competition 2014 and which problems have to be discussed in the future. Also, are there any considerations to be made about StarExec?
 
 ## Termination Competition 2014
 

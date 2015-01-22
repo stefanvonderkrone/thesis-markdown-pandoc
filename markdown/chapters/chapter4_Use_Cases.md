@@ -6,7 +6,7 @@ In this chapter I will list the use cases which the Star-Exec-Presenter is mappe
 
 One of the core use cases of the Star-Exec-Presenter is the ability to start a competition run on StarExec. As StarExec actually doesn't know what a competition in our terms is, Star-Exec-Presenter should know it. So all meta-information of a competition should be managed by the Star-Exec-Presenter. These meta information include hierarchical information of the competition's organisation as well as the details which we'll send to or get from StarExec.
 
-Hierarchical information is meant as how each solver and benchmark is organised within the competition. Each competition consists of several meta categories which cover a general topic in the competition. The 2014 Termination Competition has the following: _Termination of Term Rewriting (and Transition Systems)_, _Complexity Analysis of Term Rewriting_ and _Termination of Programming Languages_.
+Hierarchical information is meant as how each solver and benchmark is organised within the competition. Each competition consists of several meta categories which cover a general topic in the competition. The 2014 Termination Competition has the following categories: _Termination of Term Rewriting (and Transition Systems)_, _Complexity Analysis of Term Rewriting_ and _Termination of Programming Languages_.
 
 Each meta category is devided into smaller, more specific categories, each being a representation of an actual job on StarExec. These categories may be best described by the meta categories _Termination of Programming Languages_, as there is a category about the programming language C. Other categories could bring up Java, Logic Programming or Functional Programming.
 

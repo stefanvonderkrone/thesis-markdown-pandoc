@@ -10,7 +10,7 @@ The first public event was held in summer 2013. One year later, the Termination 
 
 ## Data Model
 
-The data model has three major entities: the jobs, the solvers and the benchmarks. A benchmark is a formular[^starexec_wiki_project_overview] regarding a formal problem which will be processed by a solver. A solver is a programm that takes a benchmark, analyses it and gives an output regarding the given task. For example, in the case of the Termination Competition, this output should mainly consist of one of the following results: _YES_, _NO_, _MAYBE_. Whereby the answer YES can also contain additional information for the complexity of the problem. A post-processor is responsible for filtering this info out of the solvers log.
+The data model has three major entities: the jobs, the solvers and the benchmarks. A benchmark is a formular[^starexec_wiki_project_overview] regarding a formal problem which will be processed by a solver. A solver is a programm that takes a benchmark, analyses it and gives an output regarding the given task. For example, in the case of the Termination Competition, this output should mainly consist of one of the following results: _YES_, _NO_, _MAYBE_. Whereby the answer _YES_ can also contain additional information for the complexity of the problem. A post-processor is responsible for filtering this info out of the solvers log.
 
 [^starexec_wiki_project_overview]: see [https://wiki.uiowa.edu/display/stardev/Project+Overview](https://wiki.uiowa.edu/display/stardev/Project+Overview)
 
@@ -56,6 +56,8 @@ Another important URL is the one to download certain data. This URL is used cons
 `https://www.starexec.org/starexec/services/jobs/pairs/{pairId}/log`
 
 Both listed URLs are related to the job-results. As the job-results consist only of some meta-data as well as the final result, the actual output has to be downloaded via these two URLs. Conveniently, the response is plain text. The placeholder `{pairId}` refers to the identifier of a job-result.
+
+\pagebreak
 
 `https://www.starexec.org/starexec/secure/details/job.jsp`\linebreak
 `https://www.starexec.org/starexec/secure/details/solver.jsp`\linebreak

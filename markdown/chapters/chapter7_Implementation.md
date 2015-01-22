@@ -26,6 +26,8 @@ It is important to note that, unlike programming languages like Java or C, Haske
 
 Haskell has higher-order function and emphasizes their usage. Higher-order function are functions that require functions as input parameters or return a new function. Therefore functions are data that can be passed round. Thanks to currying, all functions are higher-order functions and thereby expressions. Currying means that a function always returns a new function if it isn't called with the full list of arguments.
 
+\pagebreak
+
 ```haskell
 -- example for a higher-order function
 map :: (a -> b) -> [a] -> [b]
@@ -124,6 +126,8 @@ putStrLn' s = mapM_ putChar s >> putChar '\n'
 
 This implementation uses the monadic version of the `map` function to put each `Char` of the given `String` to the output followed by a newline. To simplify the work with the IO-Monad or Monads in general Haskell has the `do`-notation which I want to explain with the following example:
 
+\pagebreak
+
 ```haskell
 func_do f g h = do
     a <- f              -- binds the wrapped value of f to a
@@ -167,6 +171,8 @@ main = run 3000 application
 ```
 
 This program takes a request and responses with the text "Hello World", regardless of what the request may contain. A more complex example considers the requested path (route) and responds according to that:
+
+\pagebreak
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
@@ -323,8 +329,7 @@ communicateWithDB = runDB $ do
         gender = Male
         user = User ident Nothing name gender
     -- inserting the user entity
-    -- but could cause an error
-    -- if the user is already in the database
+    -- but could cause an error if the user's already in the db
     userId <- insert user
     -- because of uniqueness constrain
     -- insertUnique is better suited
@@ -343,8 +348,7 @@ communicateWithDB = runDB $ do
     -- counts all users by a certain filter
     numberOfMales <- count [ UserGender ==. Male ]
     -- fetches 10 users by a certain filter
-    femaleUsers <- selectList
-                    [ UserGender ==. Female ]
+    femaleUsers <- selectList [ UserGender ==. Female ]
                     [ Asc UserName
                     , LimitTo 10
                     , OffsetBy 0 ]
